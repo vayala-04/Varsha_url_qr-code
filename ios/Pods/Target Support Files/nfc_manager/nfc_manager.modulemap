@@ -1,0 +1,6 @@
+framework module nfc_manager {
+  umbrella header "nfc_manager-umbrella.h"
+
+  export *
+  module * { export * }
+}

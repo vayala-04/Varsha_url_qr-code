@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "340185921376",
+    "project_id": "rapidx-c05d4",
+    "storage_bucket": "rapidx-c05d4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340185921376:android:eba1f78c3a4eb73e9bd005",
+        "android_client_info": {
+          "package_name": "com.example.varsha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkQnHkJYyzQfnGECA5-iVDs0cfRcwuyoY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

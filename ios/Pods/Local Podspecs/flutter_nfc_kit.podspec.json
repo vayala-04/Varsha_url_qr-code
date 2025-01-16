@@ -1,0 +1,34 @@
+{
+  "name": "flutter_nfc_kit",
+  "version": "2.0.0",
+  "summary": "NFC support plugin of Flutter.",
+  "description": "Flutter plugin to provide NFC functionality on Android and iOS, including reading metadata, read & write NDEF records, and transceive layer 3 & 4 data with NFC tags / cards.",
+  "homepage": "https://github.com/nfcim/flutter_nfc_kit",
+  "license": {
+    "file": "../LICENSE"
+  },
+  "authors": {
+    "nfc.im": "nfsee@nfc.im"
+  },
+  "source": {
+    "path": "."
+  },
+  "source_files": "Classes/**/*",
+  "dependencies": {
+    "Flutter": [
+
+    ]
+  },
+  "weak_frameworks": [
+    "CoreNFC"
+  ],
+  "platforms": {
+    "ios": "13.0"
+  },
+  "pod_target_xcconfig": {
+    "DEFINES_MODULE": "YES",
+    "VALID_ARCHS[sdk=iphonesimulator*]": "x86_64"
+  },
+  "swift_versions": "5.0",
+  "swift_version": "5.0"
+}
