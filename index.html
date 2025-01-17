@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Data Portal</title>
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
 </head>
@@ -28,14 +29,13 @@
       measurementId: "G-23LKWV6NT1"
     };
 
+    // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-//    const pathSegments = window.location.pathname.split('/');
- //   const docId = pathSegments[pathSegments.length - 1].trim();
-    const docId = "hkhdAZLqpalDyfvtwbLV"; // Replace 'yourDocumentID' with an actual document ID from Firestore
-
-    console.log("Document ID from URL:", docId);
+    // Hardcoded Document ID
+    const docId = "hkhdAZLqpalDyfvtwbLV"; // Replace with a valid document ID
+    console.log("Using hardcoded Document ID:", docId);
 
     async function fetchData() {
       if (!docId) {
@@ -53,7 +53,7 @@
           const data = docSnap.data();
           console.log("Document Data Retrieved:", data);
 
-          // Conditionally display fields
+          // Display fields with fallback for missing data
           document.getElementById("full-name").textContent = data["Full Name"] ? `Full Name: ${data["Full Name"]}` : "Full Name: N/A";
           document.getElementById("dob").textContent = data["Date of Birth"] ? `Date of Birth: ${data["Date of Birth"]}` : "Date of Birth: N/A";
           document.getElementById("address").textContent = data["Address"] ? `Address: ${data["Address"]}` : "Address: N/A";
