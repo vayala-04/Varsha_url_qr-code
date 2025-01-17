@@ -35,14 +35,14 @@
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Get Document ID from URL
-    const params = new URLSearchParams(window.location.search);
-    const docId = params.get('id');
+    // Extract Document ID from URL path
+    const pathSegments = window.location.pathname.split('/');
+    const docId = pathSegments[pathSegments.length - 1]; // Get the last segment of the path
     console.log("Document ID from URL:", docId);
 
     async function fetchData() {
       if (!docId) {
-        console.error("No document ID in URL. Please provide an ID.");
+        console.error("No document ID provided in the URL.");
         document.getElementById("full-name").textContent = "Invalid URL";
         document.getElementById("dob").textContent = "No document ID found in the URL.";
         return;
@@ -50,12 +50,12 @@
 
       console.log("Attempting to fetch document with ID:", docId);
       try {
-        const docRef = db..collection("Patient Data").doc(docId);
+        const docRef = db.collection("Patient Data").doc(docId);
         const docSnap = await docRef.get();
 
         if (docSnap.exists) {
           const data = docSnap.data();
-          console.log("Document Data:", data);
+          console.log("Document Data Retrieved:", data);
 
           // Populate fields
           document.getElementById("full-name").textContent = `Full Name: ${data["Full Name"] || "N/A"}`;
@@ -73,7 +73,7 @@
             imgElement.style.display = "block";
           }
         } else {
-          console.warn("Document does not exist in Firestore for ID:", docId);
+          console.warn("Document does not exist for ID:", docId);
           document.getElementById("full-name").textContent = "404 Not Found";
           document.getElementById("dob").textContent = "The requested document does not exist.";
         }
