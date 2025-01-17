@@ -1,32 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Webpage</title>
-<body>
-      <meta charset="UTF-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dynamic Page</title>
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js"></script>
 </head>
 <body>
- <h1>Welcome to RapidX Data Portal!</h1>
-    <p>This is hosted alongside my Flutter app on GitHub Pages.</p>
-    <h1 id="name">Loading...</h1>
-  <p id="price"></p>
+  <h1>Welcome to RapidX Data Portal!</h1>
+  <p>This is hosted alongside my Flutter app on GitHub Pages.</p>
+  <h2 id="title">Loading...</h2>
+  <p id="content"></p>
 
   <script>
     // Firebase Configuration
     const firebaseConfig = {
-       apiKey: "AIzaSyCZurl9JjIHhn7okxnMNQ5et9dmmMwOBMI",
-  authDomain: "rapidx-18a16.firebaseapp.com",
-  projectId: "rapidx-18a16",
-  storageBucket: "rapidx-18a16.firebasestorage.app",
-  messagingSenderId: "47383229563",
-  appId: "1:47383229563:web:b014d3a477aa40659c9ede",
-  measurementId: "G-23LKWV6NT1"
+      apiKey: "AIzaSyCZurl9JjIHhn7okxnMNQ5et9dmmMwOBMI",
+      authDomain: "rapidx-18a16.firebaseapp.com",
+      projectId: "rapidx-18a16",
+      storageBucket: "rapidx-18a16.appspot.com",
+      messagingSenderId: "47383229563",
+      appId: "1:47383229563:web:b014d3a477aa40659c9ede",
+      measurementId: "G-23LKWV6NT1"
     };
 
     // Initialize Firebase
@@ -41,31 +37,12 @@
     async function fetchData() {
       console.log("Document ID:", docId); // Log the document ID
 
-if (docId) {
-  try {
-    const docRef = db.collection("yourCollectionName").doc(docId);
-    docRef.get().then((docSnap) => {
-      if (docSnap.exists) {
-        console.log("Document Data:", docSnap.data()); // Log the document data
-        document.getElementById("title").textContent = docSnap.data().title || "Document Found";
-        document.getElementById("content").textContent = docSnap.data().content || "Content loaded dynamically.";
-      } else {
-        console.error("Document not found");
-        document.getElementById("title").textContent = "404 Not Found";
-        document.getElementById("content").textContent = "The requested document does not exist.";
-      }
-    });
-  } catch (error) {
-    console.error("Error fetching document:", error);
-  }
-} else {
-  console.error("No Document ID provided in the URL");
-  document.getElementById("title").textContent = "Invalid URL";
-  document.getElementById("content").textContent = "No document ID found in the URL.";
-}
-    }
+      if (docId) {
+        try {
+          const docRef = db.collection("yourCollectionName").doc(docId); // Replace "yourCollectionName"
+          const docSnap = await docRef.get();
 
-    fetchData();
-  </script>
-</body>
-</html>
+          if (docSnap.exists) {
+            console.log("Document Data:", docSnap.data()); // Log the document data
+            document.getElementById("title").textContent = docSnap.data().title || "Document Found";
+            document
