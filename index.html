@@ -4,20 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patient Data Portal</title>
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <h1>Welcome to the Patient Data Portal</h1>
-  <p>This is hosted alongside my Flutter app on GitHub Pages.</p>
   <h2 id="full-name">Loading...</h2>
   <p id="dob"></p>
   <p id="address"></p>
   <p id="phone"></p>
   <p id="email"></p>
   <p id="timestamp"></p>
-  <img id="profile-pic" src="" alt="Profile Picture" style="max-width:200px; display:none;">
 
   <script>
     // Firebase Configuration
@@ -31,25 +28,21 @@
       measurementId: "G-23LKWV6NT1"
     };
 
-    // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Extract Document ID from URL path
-  //  const pathSegments = window.location.pathname.split('/');
-   // const docId = pathSegments[pathSegments.length - 1]; // Get the last segment of the path
-    const docId = "X8ftpiN3sGguzdW32ObT"; // Replace with a valid document ID
+    const pathSegments = window.location.pathname.split('/');
+    const docId = pathSegments[pathSegments.length - 1].trim();
     console.log("Document ID from URL:", docId);
 
     async function fetchData() {
       if (!docId) {
-        console.error("No document ID provided in the URL.");
-        document.getElementById("full-name").textContent = "Invalid URL";
-        document.getElementById("dob").textContent = "No document ID found in the URL.";
+        console.error("No Document ID provided in the URL.");
+        document.getElementById("full-name").textContent = "Invalid URL: No Document ID found.";
         return;
       }
 
-      console.log("Attempting to fetch document with ID:", docId);
+      console.log("Fetching document for ID:", docId);
       try {
         const docRef = db.collection("Patient Data").doc(docId);
         const docSnap = await docRef.get();
@@ -58,30 +51,20 @@
           const data = docSnap.data();
           console.log("Document Data Retrieved:", data);
 
-          // Populate fields
-          document.getElementById("full-name").textContent = `Full Name: ${data["Full Name"] || "N/A"}`;
-          document.getElementById("dob").textContent = `Date of Birth: ${data["Date of Birth"] || "N/A"}`;
-          document.getElementById("address").textContent = `Address: ${data["Address"] || "N/A"}`;
-          document.getElementById("phone").textContent = `Phone Number: ${data["Phone Number"] || "N/A"}`;
-          document.getElementById("email").textContent = `Email: ${data["Email"] || "N/A"}`;
-          document.getElementById("timestamp").textContent = `Timestamp: ${data["timestamp"] || "N/A"}`;
-
-          // Profile picture
-          const profilePic = data["Profile Picture"];
-          if (profilePic) {
-            const imgElement = document.getElementById("profile-pic");
-            imgElement.src = profilePic;
-            imgElement.style.display = "block";
-          }
+          // Conditionally display fields
+          document.getElementById("full-name").textContent = data["Full Name"] ? `Full Name: ${data["Full Name"]}` : "Full Name: N/A";
+          document.getElementById("dob").textContent = data["Date of Birth"] ? `Date of Birth: ${data["Date of Birth"]}` : "Date of Birth: N/A";
+          document.getElementById("address").textContent = data["Address"] ? `Address: ${data["Address"]}` : "Address: N/A";
+          document.getElementById("phone").textContent = data["Phone Number"] ? `Phone Number: ${data["Phone Number"]}` : "Phone Number: N/A";
+          document.getElementById("email").textContent = data["Email"] ? `Email: ${data["Email"]}` : "Email: N/A";
+          document.getElementById("timestamp").textContent = data["timestamp"] ? `Timestamp: ${data["timestamp"]}` : "Timestamp: N/A";
         } else {
-          console.warn("Document does not exist for ID:", docId);
-          document.getElementById("full-name").textContent = "404 Not Found";
-          document.getElementById("dob").textContent = "The requested document does not exist.";
+          console.error("Document does not exist for ID:", docId);
+          document.getElementById("full-name").textContent = "404 Not Found: Document does not exist.";
         }
       } catch (error) {
         console.error("Error fetching document:", error);
-        document.getElementById("full-name").textContent = "Error";
-        document.getElementById("dob").textContent = "Failed to load the data.";
+        document.getElementById("full-name").textContent = "Error: Failed to load the data.";
       }
     }
 
