@@ -35,20 +35,30 @@
 
     // Fetch Data from Firestore
     async function fetchData() {
-      if (docId) {
-        const docRef = db.collection('products').doc(docId);
-        const docSnap = await docRef.get();
+      console.log("Document ID:", docId); // Log the document ID
 
-        if (docSnap.exists) {
-          // Display Data
-          document.getElementById('name').textContent = docSnap.data().name;
-          document.getElementById('price').textContent = `Price: $${docSnap.data().price}`;
-        } else {
-          document.getElementById('name').textContent = 'Document not found!';
-        }
+if (docId) {
+  try {
+    const docRef = db.collection("yourCollectionName").doc(docId);
+    docRef.get().then((docSnap) => {
+      if (docSnap.exists) {
+        console.log("Document Data:", docSnap.data()); // Log the document data
+        document.getElementById("title").textContent = docSnap.data().title || "Document Found";
+        document.getElementById("content").textContent = docSnap.data().content || "Content loaded dynamically.";
       } else {
-        document.getElementById('name').textContent = 'No Document ID provided!';
+        console.error("Document not found");
+        document.getElementById("title").textContent = "404 Not Found";
+        document.getElementById("content").textContent = "The requested document does not exist.";
       }
+    });
+  } catch (error) {
+    console.error("Error fetching document:", error);
+  }
+} else {
+  console.error("No Document ID provided in the URL");
+  document.getElementById("title").textContent = "Invalid URL";
+  document.getElementById("content").textContent = "No document ID found in the URL.";
+}
     }
 
     fetchData();
