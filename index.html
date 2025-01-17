@@ -33,14 +33,16 @@
     const app = firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // Hardcoded Document ID
-    const docId = "hkhdAZLqpalDyfvtwbLV"; // Replace with a valid document ID
-    console.log("Using hardcoded Document ID:", docId);
+    // Extract Document ID from URL Query Parameters
+    const params = new URLSearchParams(window.location.search);
+    const docId = params.get('id'); // Get the 'id' query parameter
+    console.log("Document ID from URL:", docId);
 
     async function fetchData() {
       if (!docId) {
         console.error("No Document ID provided in the URL.");
         document.getElementById("full-name").textContent = "Invalid URL: No Document ID found.";
+        document.getElementById("dob").textContent = "Please add ?id=yourDocumentID to the URL.";
         return;
       }
 
