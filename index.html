@@ -39,7 +39,7 @@
 
       if (docId) {
         try {
-          const docRef = db.collection("yourCollectionName").doc(docId); // Replace "yourCollectionName"
+          const docRef = db.collection("Patient Data").doc(docId); // Replace "yourCollectionName"
           const docSnap = await docRef.get();
 
           if (docSnap.exists) {
