@@ -50,7 +50,7 @@
 
       console.log("Attempting to fetch document with ID:", docId);
       try {
-        const docRef = db.collection("Patient Data").doc(docId);
+        const docRef = db..collection("Patient Data").doc(docId);
         const docSnap = await docRef.get();
 
         if (docSnap.exists) {
