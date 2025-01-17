@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Page</title>
+  <title>Patient Data Portal</title>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore.js"></script>
 </head>
 <body>
-  <h1>Welcome to RapidX Data Portal!</h1>
+  <h1>Welcome to the Patient Data Portal</h1>
   <p>This is hosted alongside my Flutter app on GitHub Pages.</p>
-  <h2 id="title">Loading...</h2>
-  <p id="content"></p>
+  <h2 id="full-name">Loading...</h2>
+  <p id="dob"></p>
+  <p id="address"></p>
+  <p id="phone"></p>
+  <p id="email"></p>
+  <p id="timestamp"></p>
+  <img id="profile-pic" src="" alt="Profile Picture" style="max-width:200px; display:none;">
 
   <script>
     // Firebase Configuration
@@ -32,36 +37,50 @@
 
     // Get Document ID from URL
     const params = new URLSearchParams(window.location.search);
-    const docId = params.get('id'); // Example URL: ?id=abc123
+    const docId = params.get('id');
     console.log("Document ID from URL:", docId);
 
-    // Fetch Data from Firestore
     async function fetchData() {
-      if (docId) {
-        try {
-          // Use "Patient Data" as the collection name
-          const docRef = db.collection("Patient Data").doc(docId);
-          const docSnap = await docRef.get();
+      if (!docId) {
+        console.error("No document ID in URL. Please provide an ID.");
+        document.getElementById("full-name").textContent = "Invalid URL";
+        document.getElementById("dob").textContent = "No document ID found in the URL.";
+        return;
+      }
 
-          if (docSnap.exists) {
-            const data = docSnap.data();
-            console.log("Document Data:", data); // Log document data
-            document.getElementById("title").textContent = data.title || "Untitled";
-            document.getElementById("content").textContent = data.content || "No content available.";
-          } else {
-            console.log("Document does not exist");
-            document.getElementById("title").textContent = "404 Not Found";
-            document.getElementById("content").textContent = "The requested document does not exist.";
+      console.log("Attempting to fetch document with ID:", docId);
+      try {
+        const docRef = db.collection("Patient Data").doc(docId);
+        const docSnap = await docRef.get();
+
+        if (docSnap.exists) {
+          const data = docSnap.data();
+          console.log("Document Data:", data);
+
+          // Populate fields
+          document.getElementById("full-name").textContent = `Full Name: ${data["Full Name"] || "N/A"}`;
+          document.getElementById("dob").textContent = `Date of Birth: ${data["Date of Birth"] || "N/A"}`;
+          document.getElementById("address").textContent = `Address: ${data["Address"] || "N/A"}`;
+          document.getElementById("phone").textContent = `Phone Number: ${data["Phone Number"] || "N/A"}`;
+          document.getElementById("email").textContent = `Email: ${data["Email"] || "N/A"}`;
+          document.getElementById("timestamp").textContent = `Timestamp: ${data["timestamp"] || "N/A"}`;
+
+          // Profile picture
+          const profilePic = data["Profile Picture"];
+          if (profilePic) {
+            const imgElement = document.getElementById("profile-pic");
+            imgElement.src = profilePic;
+            imgElement.style.display = "block";
           }
-        } catch (error) {
-          console.error("Error fetching document:", error);
-          document.getElementById("title").textContent = "Error";
-          document.getElementById("content").textContent = "Failed to load the data.";
+        } else {
+          console.warn("Document does not exist in Firestore for ID:", docId);
+          document.getElementById("full-name").textContent = "404 Not Found";
+          document.getElementById("dob").textContent = "The requested document does not exist.";
         }
-      } else {
-        console.error("No Document ID in URL");
-        document.getElementById("title").textContent = "Invalid URL";
-        document.getElementById("content").textContent = "No document ID found in the URL.";
+      } catch (error) {
+        console.error("Error fetching document:", error);
+        document.getElementById("full-name").textContent = "Error";
+        document.getElementById("dob").textContent = "Failed to load the data.";
       }
     }
 
