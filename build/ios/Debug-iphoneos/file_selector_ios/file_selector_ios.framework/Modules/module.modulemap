@@ -1,0 +1,11 @@
+framework module file_selector_ios {
+  umbrella header "file_selector_ios-umbrella.h"
+
+  export *
+  module * { export * }
+}
+
+module file_selector_ios.Swift {
+  header "file_selector_ios-Swift.h"
+  requires objc
+}

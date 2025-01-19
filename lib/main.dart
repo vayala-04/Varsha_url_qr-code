@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SecondScreen(),
         // Set SecondScreen as the home page
         '/second/form': (context) => const FormScreen(),
-        '/summary': (context) => SummaryScreen(),
+        '/summary': (context) => const SummaryScreen(),
       },
     );
   }
@@ -44,7 +45,7 @@ class SecondScreen extends StatefulWidget {
 }
 
 class SecondScreenState extends State<SecondScreen> {
-  Map<String, String>? _latestSubmission;
+  Map<String, dynamic>? latestSubmission;
 
   Future<String?> saveToFireStore(Map<String, String> data) async {
     try {
@@ -58,10 +59,11 @@ class SecondScreenState extends State<SecondScreen> {
           .add(enrichedData);
 
       String documentUrl =
-          'https://firestore.googleapis.com/v1/projects/rapidx-18a16/databases/(default)/documents/Patient Data/${docRef.id}';
+          'https://vayala-04.github.io/Varsha_url_qr-code/?id=${docRef.id}';
 
       final prefs = await SharedPreferences.getInstance();
-      prefs.setString('latest_submission', documentUrl);
+      prefs.setString('latest_submission', jsonEncode(data));
+      prefs.setString('url', documentUrl);
 
       return documentUrl;
     } catch (e) {
@@ -71,10 +73,13 @@ class SecondScreenState extends State<SecondScreen> {
   }
 
   void _handleWriteToPendant(BuildContext context) async {
-    final result = await Navigator.pushNamed(
-      context,
-      '/second/form',
-    ) as Map<String, String>?;
+    final prefs = await SharedPreferences.getInstance();
+    Map<String, dynamic>? latestData;
+    if (prefs.getString('latest_submission') != null) {
+      latestData = jsonDecode(prefs.getString('latest_submission')!);
+    }
+    final result = await Navigator.pushNamed(context, '/second/form',
+        arguments: latestData) as Map<String, String>?;
 
     if (result != null) {
       String? documentUrl = await saveToFireStore(result);
@@ -155,18 +160,19 @@ class SecondScreenState extends State<SecondScreen> {
               child: const Text('View Summary'),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
-                String? url = prefs.getString('latest_submission');
+                String? url = prefs.getString('url');
 
                 if (url != null) {
                   Uri uri = Uri.parse(url);
-                  String path = uri.path;
-                  String documentId = path.substring(path.lastIndexOf('/') + 1);
+                  // Get the value of the 'id' parameter
+                  final documentId = uri.queryParameters['id'] ?? '';
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => UrlListScreen(
                         documentUrl: url,
                         documentId: documentId,
+                        from: 'viewSummary',
                       ),
                     ),
                   );
@@ -216,12 +222,10 @@ class SecondScreenState extends State<SecondScreen> {
                 if (info.title == 'Wellknown Uri') {
                   try {
                     Uri uri = Uri.parse(info.subtitle);
-                    String path = uri.path;
-                    String documentId =
-                        path.substring(path.lastIndexOf('/') + 1);
 
+                    final documentId = uri.queryParameters['id'] ?? '';
                     final prefs = await SharedPreferences.getInstance();
-                    prefs.setString('latest_submission', info.subtitle);
+                    prefs.setString('url', info.subtitle);
 
                     Navigator.push(
                       context,
@@ -229,6 +233,7 @@ class SecondScreenState extends State<SecondScreen> {
                         builder: (context) => UrlListScreen(
                           documentUrl: info.subtitle,
                           documentId: documentId,
+                          from: 'read',
                         ),
                       ),
                     );
@@ -253,11 +258,16 @@ class SecondScreenState extends State<SecondScreen> {
 class UrlListScreen extends StatelessWidget {
   final String documentUrl;
   final String documentId;
+  final String from;
 
   const UrlListScreen(
-      {super.key, required this.documentUrl, required this.documentId});
+      {super.key,
+      required this.documentUrl,
+      required this.documentId,
+      required this.from});
 
   void _fetchSimplifiedData(BuildContext context) async {
+    debugPrint("DOC ID $documentId");
     try {
       final docSnapshot = await FirebaseFirestore.instance
           .collection('Patient Data')
@@ -324,11 +334,13 @@ class UrlListScreen extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            QrImageView(
-              data: documentUrl,
-              version: QrVersions.auto,
-              size: 200.0,
-            ),
+            from == 'read'
+                ? const SizedBox()
+                : QrImageView(
+                    data: documentUrl,
+                    version: QrVersions.auto,
+                    size: 200.0,
+                  ),
           ],
         ),
       ),
@@ -367,14 +379,14 @@ class SimplifiedDataScreen extends StatelessWidget {
                       );
               }).toList(),
             ),
-            const SizedBox(
+            /*const SizedBox(
               height: 10,
             ),
             QrImageView(
               data: documentUrl,
               version: QrVersions.auto,
               size: 200.0,
-            ),
+            ),*/
           ],
         ),
       ),
@@ -391,6 +403,7 @@ class FormScreen extends StatefulWidget {
 
 class FormScreenState extends State<FormScreen> {
   final Map<String, TextEditingController> _controllers = {};
+  Map<String, dynamic>? latestSubmission;
   final List<String> _fieldNames = [
     'Full Name',
     'Date of Birth',
@@ -416,6 +429,7 @@ class FormScreenState extends State<FormScreen> {
   @override
   void initState() {
     super.initState();
+
     for (final field in _fieldNames) {
       _controllers[field] = TextEditingController();
     }
@@ -445,6 +459,15 @@ class FormScreenState extends State<FormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    if (args != null) {
+      for (final field in _fieldNames) {
+        _controllers[field]?.text = args[field]??'';
+      }
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Patient Data Portal'),
