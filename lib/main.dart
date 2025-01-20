@@ -54,20 +54,29 @@ class SecondScreenState extends State<SecondScreen> {
         'timestamp': FieldValue.serverTimestamp(),
       };
 
-      DocumentReference docRef = await FirebaseFirestore.instance
-          .collection('Patient Data')
-          .add(enrichedData);
+      final prefs = await SharedPreferences.getInstance();
+      final documentId = prefs.getString('documentId'); // Retrieve the stored document ID
+
+      DocumentReference docRef;
+      if (documentId != null) {
+        // Update the existing document
+        docRef = FirebaseFirestore.instance.collection('Patient Data').doc(documentId);
+        await docRef.update(enrichedData);
+      } else {
+        // Create a new document if no document ID exists
+        docRef = await FirebaseFirestore.instance.collection('Patient Data').add(enrichedData);
+
+        // Store the document ID for future updates
+        prefs.setString('documentId', docRef.id);
+      }
 
       String documentUrl =
           'https://vayala-04.github.io/Varsha_url_qr-code/?id=${docRef.id}';
-
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('latest_submission', jsonEncode(data));
-      prefs.setString('url', documentUrl);
+      prefs.setString('url', documentUrl); // Store the document URL
 
       return documentUrl;
     } catch (e) {
-      print('Failed to save data: $e');
+      print('Failed to save or update data: $e');
       return null;
     }
   }
@@ -464,7 +473,7 @@ class FormScreenState extends State<FormScreen> {
 
     if (args != null) {
       for (final field in _fieldNames) {
-        _controllers[field]?.text = args[field]??'';
+        _controllers[field]?.text = args[field] ?? '';
       }
     }
 
