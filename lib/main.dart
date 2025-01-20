@@ -127,7 +127,7 @@ class SecondScreenState extends State<SecondScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select an Option'),
+        title: const Text('Welcome to RAPIDx'),
       ),
       body: Center(
         child: Column(
