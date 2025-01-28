@@ -17,17 +17,29 @@
   <p id="email"></p>
   <p id="timestamp"></p>
 
+  <!-- Profile Picture -->
+  <div id="profile-picture-container">
+    <h3>Profile Picture</h3>
+    <img id="profile-picture" src="" alt="Profile Picture" style="max-width: 150px; max-height: 150px; display: none;" />
+  </div>
+
+  <!-- PDF Preview -->
+  <div id="pdf-preview-container">
+    <h3>PDF Preview</h3>
+    <iframe id="pdf-preview" src="" style="width: 100%; height: 500px; display: none; border: 1px solid #ccc;"></iframe>
+  </div>
+
   <script>
     // Firebase Configuration
     const firebaseConfig = {
-  apiKey: "AIzaSyDNtdXr47xjKQOydo96uvzjYviZmO31jPo",
-  authDomain: "rapidx-c05d4.firebaseapp.com",
-  projectId: "rapidx-c05d4",
-  storageBucket: "rapidx-c05d4.firebasestorage.app",
-  messagingSenderId: "340185921376",
-  appId: "1:340185921376:web:5d088b0e41e027439bd005",
-  measurementId: "G-25K8KBB70R"
-};
+      apiKey: "AIzaSyDNtdXr47xjKQOydo96uvzjYviZmO31jPo",
+      authDomain: "rapidx-c05d4.firebaseapp.com",
+      projectId: "rapidx-c05d4",
+      storageBucket: "rapidx-c05d4.appspot.com",
+      messagingSenderId: "340185921376",
+      appId: "1:340185921376:web:5d088b0e41e027439bd005",
+      measurementId: "G-25K8KBB70R"
+    };
 
     // Initialize Firebase
     const app = firebase.initializeApp(firebaseConfig);
@@ -62,6 +74,20 @@
           document.getElementById("phone").textContent = data["Phone Number"] ? `Phone Number: ${data["Phone Number"]}` : "Phone Number: N/A";
           document.getElementById("email").textContent = data["Email"] ? `Email: ${data["Email"]}` : "Email: N/A";
           document.getElementById("timestamp").textContent = data["timestamp"] ? `Timestamp: ${data["timestamp"]}` : "Timestamp: N/A";
+
+          // Display profile picture if available
+          if (data["Profile Picture URL"]) {
+            const profilePicture = document.getElementById("profile-picture");
+            profilePicture.src = data["Profile Picture URL"];
+            profilePicture.style.display = "block";
+          }
+
+          // Display PDF preview if available
+          if (data["PDF URL"]) {
+            const pdfPreview = document.getElementById("pdf-preview");
+            pdfPreview.src = data["PDF URL"];
+            pdfPreview.style.display = "block";
+          }
         } else {
           console.error("Document does not exist for ID:", docId);
           document.getElementById("full-name").textContent = "404 Not Found: Document does not exist.";
