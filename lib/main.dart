@@ -573,7 +573,7 @@ class FormScreenState extends State<FormScreen> {
 
   File? selectedProfile;
   File? selectedPdf;
-  String? selectedPdfFileName;
+
 
   bool loader = false;
 
@@ -714,9 +714,9 @@ class FormScreenState extends State<FormScreen> {
                   ? Center(
                       child: TextButton(
                         onPressed: pickPdfFile,
-                        child: Text(selectedPdf == null
+                        child: Text((selectedPdf == null&& (args?['pdf']==null||args?['pdf'].isEmpty))
                             ? "select_pdf".tr()
-                            : '${'file_selected'.tr()} $selectedPdfFileName'),
+                            : 'file_selected'.tr()),
                       ),
                     )
                   : const SizedBox(),
@@ -878,7 +878,6 @@ class FormScreenState extends State<FormScreen> {
       String filePath = result.files.single.path!;
       setState(() {
         selectedPdf = File(filePath);
-        selectedPdfFileName = result.files.single.name;
       });
     }
   }

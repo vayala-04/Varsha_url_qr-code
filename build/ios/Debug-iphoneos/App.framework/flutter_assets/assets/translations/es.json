@@ -20,5 +20,11 @@
   "policy_number": "Número de póliza",
   "select_language": "Seleccionar idioma",
   "photo_library": "Biblioteca de fotos",
-  "camera": "Cámara"
+  "camera": "Cámara",
+  "pdf": "PDF",
+  "profile": "Perfil",
+  "from_submitted_successfully": "¡Formulario enviado exitosamente!",
+  "submit": "Entregar",
+  "select_pdf": "Seleccione PDF",
+  "file_selected": "Archivo seleccionado"
 }
