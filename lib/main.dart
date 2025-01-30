@@ -1,13 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:path/path.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'firebase_options.dart';
 import 'ndef_record_info.dart';
 
@@ -16,7 +19,16 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+
+  await EasyLocalization.ensureInitialized();
+
+  runApp(
+    EasyLocalization(
+        supportedLocales: const [Locale('en'), Locale('es')],
+        path: 'assets/translations',
+        fallbackLocale: const Locale('en'),
+        child: const MyApp()),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -25,6 +37,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       title: 'Patient Data Management',
       initialRoute: '/',
       routes: {
@@ -144,7 +159,7 @@ class SecondScreenState extends State<SecondScreen> {
               onPressed: () async {
                 await isNfcAvailable().then((available) {
                   if (available) {
-                    readNfcTag();
+                    readNfcTag(context);
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -201,7 +216,7 @@ class SecondScreenState extends State<SecondScreen> {
         return isAvailable;
       });
 
-  Future<void> readNfcTag() async {
+  Future<void> readNfcTag(BuildContext context) async {
     if (Platform.isIOS) {
       return NfcManager.instance.startSession(
         alertMessage: "Hold your phone near the NFC device",
@@ -294,7 +309,7 @@ class UrlListScreen extends StatelessWidget {
         );
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No data found in the document')),
+          const SnackBar(content: Text('No data found in the document')),
         );
       }
     } catch (e) {
@@ -348,12 +363,19 @@ class UrlListScreen extends StatelessWidget {
   }
 }
 
-class SimplifiedDataScreen extends StatelessWidget {
+class SimplifiedDataScreen extends StatefulWidget {
   final Map<String, dynamic> data;
   final String documentUrl;
 
   const SimplifiedDataScreen(
       {super.key, required this.data, required this.documentUrl});
+
+  @override
+  SimplifiedDataScreenState createState() => SimplifiedDataScreenState();
+}
+
+class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
+  List<String> languages = ['English', 'Spanish'];
 
   @override
   Widget build(BuildContext context) {
@@ -364,16 +386,37 @@ class SimplifiedDataScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text('select_language'.tr()),
+            DropdownButton(
+              isExpanded: true,
+              value: context.locale == const Locale('en')
+                  ? languages[0]
+                  : languages[1],
+              onChanged: (value) {
+                if (value == 'English') {
+                  context.setLocale(const Locale('en'));
+                } else if (value == 'Spanish') {
+                  context.setLocale(const Locale('es'));
+                }
+              },
+              items: languages.map((String lang) {
+                return DropdownMenuItem<String>(
+                  value: lang,
+                  child: Text(lang),
+                );
+              }).toList(),
+            ),
             ListView(
               shrinkWrap: true,
-              children: data.entries.map((entry) {
+              children: widget.data.entries.map((entry) {
                 return entry.key == 'timestamp'
                     ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
-                          '${entry.key}:   ${entry.value}',
+                          '${entry.key.tr()}:   ${entry.value}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       );
@@ -405,26 +448,30 @@ class FormScreenState extends State<FormScreen> {
   final Map<String, TextEditingController> _controllers = {};
   Map<String, dynamic>? latestSubmission;
   final List<String> _fieldNames = [
-    'Full Name',
-    'Date of Birth',
-    'Phone Number',
-    'Address',
-    'Preferred Language',
-    'Preferred Hospital',
-    'Primary Contact Name',
-    'Relationship to Primary Contact',
-    'Primary Contact Phone',
-    'Allergies',
-    'Medications',
-    'Pre-Existing Conditions',
-    'Past Surgeries',
-    'Do Not Resuscitate',
-    'Blood Type',
-    'Primary Physician Name',
-    'Primary Physician Phone',
-    'Insurance Provider',
-    'Policy Number',
+    'full_name',
+    'date_of_birth',
+    'phone_number',
+    'address',
+    'preferred_language',
+    'preferred_hospital',
+    'primary_contact_name',
+    'relationship_to_primary_contact',
+    'primary_contact_phone',
+    'allergies',
+    'medications',
+    'pre_existing_conditions',
+    'past_surgeries',
+    'do_not_resuscitate',
+    'blood_type',
+    'primary_physician_name',
+    'primary_physician_phone',
+    'insurance_provider',
+    'policy_number',
   ];
+
+  List<String> languages = ['English', 'Spanish'];
+
+  File ? selectedProfile;
 
   @override
   void initState() {
@@ -443,7 +490,139 @@ class FormScreenState extends State<FormScreen> {
     super.dispose();
   }
 
-  void _handleSubmit() {
+
+
+  @override
+  Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+    if (args != null) {
+      for (final field in _fieldNames) {
+        _controllers[field]?.text = args[field] ?? '';
+      }
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Patient Data Portal'),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('select_language'.tr()),
+            DropdownButton(
+              isExpanded: true,
+              value: context.locale == const Locale('en')
+                  ? languages[0]
+                  : languages[1],
+              onChanged: (value) {
+                if (value == 'English') {
+                  context.setLocale(const Locale('en'));
+                } else if (value == 'Spanish') {
+                  context.setLocale(const Locale('es'));
+                }
+
+              },
+              items: languages.map((String lang) {
+                return DropdownMenuItem<String>(
+                  value: lang,
+                  child: Text(lang),
+                );
+              }).toList(),
+            ),
+            const SizedBox(height: 16,),
+            Center(
+                child: Stack(
+                  children: [
+                    (selectedProfile == null &&
+                        args?['profile'] == null)
+                        ? Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.white, width: 0),
+                          shape: BoxShape.circle,
+                          color: Colors.grey,
+                          image: const DecorationImage(
+                              image: AssetImage('assets/icons/avatar.png'))),
+                      height: 100,
+                      width: 100,
+                    )
+                        : (selectedProfile != null)
+                        ? Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color:  Colors.white,
+                              width: 0),
+                          shape: BoxShape.circle,
+                          color: Colors.grey,
+                          image: DecorationImage(
+                              image: FileImage(
+                                  selectedProfile!))),
+                      height: 100,
+                      width: 100,
+                    )
+                        : Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: Colors.white,
+                              width: 0),
+                          shape: BoxShape.circle,
+                          color:  Colors.grey,
+                          image: DecorationImage(
+                              image:
+                              CachedNetworkImageProvider(
+                                  args?['profile']))),
+                      height: 100,
+                      width: 100,
+                    ),
+                    Positioned(
+                      bottom: 2,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          showPicker(context, 0);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                color: Colors.white, width: 2),
+                            color: Colors.black,
+                          ),
+                          height: 28,
+                          width: 28,
+                          child: const Icon(Icons.edit,size: 14,color: Colors.white,),
+                        ),
+                      ),
+                    ),
+                  ],
+                )),
+            const SizedBox(height: 16,),
+            for (final field in _fieldNames) ...[
+              TextField(
+                controller: _controllers[field],
+                decoration: InputDecoration(labelText: field.tr()),
+              ),
+              const SizedBox(height: 16),
+            ],
+            Center(
+              child: ElevatedButton(
+                onPressed:()=> _handleSubmit(context),
+                child: const Text('Submit'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  void _handleSubmit(BuildContext context) {
     final submission = {
       for (final field in _fieldNames)
         if (_controllers[field]!.text.trim().isNotEmpty)
@@ -457,42 +636,89 @@ class FormScreenState extends State<FormScreen> {
     Navigator.pop(context, submission);
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-
-    if (args != null) {
-      for (final field in _fieldNames) {
-        _controllers[field]?.text = args[field]??'';
-      }
-    }
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Patient Data Portal'),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            for (final field in _fieldNames) ...[
-              TextField(
-                controller: _controllers[field],
-                decoration: InputDecoration(labelText: field),
-              ),
-              const SizedBox(height: 16),
-            ],
-            ElevatedButton(
-              onPressed: _handleSubmit,
-              child: const Text('Submit'),
+  void showPicker(BuildContext context, int type) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: Text('photo_library'.tr()),
+                    onTap: () {
+                      _imgFromGallery(context, type);
+                      Navigator.of(context).pop();
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: Text('camera'.tr()),
+                  onTap: () {
+                    _imgFromCamera(context, type);
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        });
   }
+
+  Future<void> _imgFromGallery(BuildContext context, int type) async {
+    final ImagePicker picker = ImagePicker();
+    // Pick an image
+    await picker
+        .pickImage(
+        source: ImageSource.gallery,
+        maxHeight: 1080,
+        maxWidth: 1080,
+        imageQuality: 90)
+        .then((image) async {
+      if (image?.path != null) {
+      await  uploadImage( context, image);
+      }
+    });
+  }
+
+  Future<void> _imgFromCamera(BuildContext context, int type) async {
+    final ImagePicker picker = ImagePicker();
+    // Capture a photo
+    await picker
+        .pickImage(
+        source: ImageSource.camera,
+        maxHeight: 1080,
+        maxWidth: 1080,
+        imageQuality: 90)
+        .then((image) async {
+      if (image?.path != null) {
+        await  uploadImage( context, image);
+      }
+    });
+  }
+
+
+
+  Future<String?> uploadImage(BuildContext context, XFile? image) async {
+    String fileName = basename(image!.path);
+    try {
+      await firebase_storage.FirebaseStorage.instance
+          .ref('images/$fileName')
+          .putFile(File(image.path));
+      var downloadUrl = await firebase_storage.FirebaseStorage.instance
+          .ref('images/$fileName')
+          .getDownloadURL();
+      return downloadUrl;
+    } on firebase_storage.FirebaseException catch (e) {
+
+
+      ScaffoldMessenger.of(context).showSnackBar(
+         SnackBar(content: Text(e.message.toString())),
+      );
+      debugPrint("Upload Error ${e.message}");
+    }
+    return null;
+  }
+
 }
 
 class SummaryScreen extends StatelessWidget {

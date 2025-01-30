@@ -10,11 +10,11 @@
 		</data>
 		<key>flutter_assets/AssetManifest.bin</key>
 		<data>
-		21tVqbIV90TbglF4ZJhNBz8uj4w=
+		mK8Gwkl2HzeEOTBgdukeImg86Eo=
 		</data>
 		<key>flutter_assets/AssetManifest.json</key>
 		<data>
-		vyGp6PvFo4RvsFtPoIWeCReyIC8=
+		3bZBD+lMu+adN2mkLeC2YFHG2EA=
 		</data>
 		<key>flutter_assets/FontManifest.json</key>
 		<data>
@@ -22,7 +22,19 @@
 		</data>
 		<key>flutter_assets/NOTICES.Z</key>
 		<data>
-		U86yPOiYSSDwhfghCdq6upMkdXc=
+		wCGdHZnxjXLKz4eCViMpXqZ9hr4=
+		</data>
+		<key>flutter_assets/assets/icons/avatar.png</key>
+		<data>
+		ZHixpv5T3puV8Xph+O9rkUgmhkc=
+		</data>
+		<key>flutter_assets/assets/translations/en.json</key>
+		<data>
+		1zKyQTwvDBwUDYh161Q8FCusDos=
+		</data>
+		<key>flutter_assets/assets/translations/es.json</key>
+		<data>
+		QUjiI19yDilnmFWQtdN0LJmugmE=
 		</data>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
 		<data>
@@ -34,7 +46,7 @@
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		M9py9HrKjq3L6oJ++mvlvDeGQLs=
+		hikLGydqytq1pYMX+Ckch91Fpg4=
 		</data>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>
 		<data>
@@ -51,14 +63,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9WbMb8zGVzZcAZeszzp9b4D4Ugn/Zm/3dPTcvFJKqEI=
+			ku0YRuyCTpZLioyOo1uXQ0cWK0vFvEvQY/yMnesiAR8=
 			</data>
 		</dict>
 		<key>flutter_assets/AssetManifest.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			RBNvo1WzZ4oRRq0W9+hknpT7T8If536DEMBg9hyq/4o=
+			KY2WRFhGCIOu5gEVL8vNUtMV6DiDvoadqCtdsjjCkfM=
 			</data>
 		</dict>
 		<key>flutter_assets/FontManifest.json</key>
@@ -72,7 +84,28 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			St8IrWbRYXD1s6DPR2cnS0tqbKO3tXjK3bHl4KAGhTE=
+			kbC1S98qEOM+MpdCMtSaSvF+d0UFYKLFaZgNrmswBLA=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/icons/avatar.png</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			URlB3C4gso3HarTJZ/Vrr+oQ0KNi+kyhp6+n4rmavwU=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/translations/en.json</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			8L5a6AseZHnzeBUJJ9IXO3oJluDgrit5ggTFuxg+3HQ=
+			</data>
+		</dict>
+		<key>flutter_assets/assets/translations/es.json</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			zbmqg/i5XwCAzFEhLUFCkrJfCXGlgG3+DiSKaqWrTMQ=
 			</data>
 		</dict>
 		<key>flutter_assets/fonts/MaterialIcons-Regular.otf</key>
@@ -93,7 +126,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			usMtfBGIaCbQn6o7bdGukyEiOxOmDG+s75ywVYDs82o=
+			8U26OIohd3FHe3k/EqWdZDBUNh7HM8oprKx3MkvZIdA=
 			</data>
 		</dict>
 		<key>flutter_assets/shaders/ink_sparkle.frag</key>
