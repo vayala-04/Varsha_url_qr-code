@@ -44,7 +44,6 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SecondScreen(),
-        // Set SecondScreen as the home page
         '/second/form': (context) => const FormScreen(),
         '/summary': (context) => const SummaryScreen(),
       },
@@ -69,20 +68,25 @@ class SecondScreenState extends State<SecondScreen> {
         'timestamp': FieldValue.serverTimestamp(),
       };
 
-      DocumentReference docRef = await FirebaseFirestore.instance
-          .collection('Patient Data')
-          .add(enrichedData);
+      final prefs = await SharedPreferences.getInstance();
+      final documentId = prefs.getString('documentId');
+
+      DocumentReference docRef;
+      if (documentId != null) {
+        docRef = FirebaseFirestore.instance.collection('Patient Data').doc(documentId);
+        await docRef.update(enrichedData);
+      } else {
+        docRef = await FirebaseFirestore.instance.collection('Patient Data').add(enrichedData);
+        prefs.setString('documentId', docRef.id);
+      }
 
       String documentUrl =
           'https://vayala-04.github.io/Varsha_url_qr-code/?id=${docRef.id}';
-
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString('latest_submission', jsonEncode(data));
       prefs.setString('url', documentUrl);
 
       return documentUrl;
     } catch (e) {
-      print('Failed to save data: $e');
+      print('Failed to save or update data: $e');
       return null;
     }
   }
@@ -90,13 +94,19 @@ class SecondScreenState extends State<SecondScreen> {
   void _handleWriteToPendant(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
     Map<String, dynamic>? latestData;
+
     if (prefs.getString('latest_submission') != null) {
       latestData = jsonDecode(prefs.getString('latest_submission')!);
     }
-    final result = await Navigator.pushNamed(context, '/second/form',
-        arguments: latestData) as Map<String, String>?;
+
+    final result = await Navigator.pushNamed(
+      context,
+      '/second/form',
+      arguments: latestData,
+    ) as Map<String, String>?;
 
     if (result != null) {
+      prefs.setString('latest_submission', jsonEncode(result));
       String? documentUrl = await saveToFireStore(result);
 
       if (documentUrl != null) {
@@ -117,10 +127,8 @@ class SecondScreenState extends State<SecondScreen> {
 
             await ndef.write(message);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                  content: Text('URL written to NFC tag successfully!')),
+              const SnackBar(content: Text('URL written to NFC tag successfully!')),
             );
-
             NfcManager.instance.stopSession();
           } catch (e) {
             print('Error writing to NFC tag: $e');
@@ -142,7 +150,7 @@ class SecondScreenState extends State<SecondScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select an Option'),
+        title: const Text('Welcome to RAPIDx'),
       ),
       body: Center(
         child: Column(
@@ -179,7 +187,6 @@ class SecondScreenState extends State<SecondScreen> {
 
                 if (url != null) {
                   Uri uri = Uri.parse(url);
-                  // Get the value of the 'id' parameter
                   final documentId = uri.queryParameters['id'] ?? '';
                   Navigator.push(
                     context,
@@ -191,16 +198,9 @@ class SecondScreenState extends State<SecondScreen> {
                       ),
                     ),
                   );
-
-                  /* Navigator.pushNamed(
-                    context,
-                    '/summary',
-                    arguments: _latestSubmission,
-                  );*/
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('No submissions available to display!')),
+                    const SnackBar(content: Text('No submissions available to display!')),
                   );
                 }
               },
@@ -292,7 +292,6 @@ class UrlListScreen extends StatelessWidget {
       if (docSnapshot.exists) {
         final fields = docSnapshot.data();
 
-        // Simplify the fields data
         final simplifiedData = fields?.map((key, value) {
           if (value is Map && value.containsKey('stringValue')) {
             return MapEntry(key, value['stringValue']);
@@ -422,14 +421,6 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
                       );
               }).toList(),
             ),
-            /*const SizedBox(
-              height: 10,
-            ),
-            QrImageView(
-              data: documentUrl,
-              version: QrVersions.auto,
-              size: 200.0,
-            ),*/
           ],
         ),
       ),
