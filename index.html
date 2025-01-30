@@ -69,23 +69,23 @@
 
           // Display fields with fallback for missing data
           document.getElementById("full-name").textContent = data["full_name"] ? `Full Name: ${data["full_name"]}` : "Full Name: N/A";
-          document.getElementById("dob").textContent = data["Date of Birth"] ? `Date of Birth: ${data["Date of Birth"]}` : "Date of Birth: N/A";
-          document.getElementById("address").textContent = data["Address"] ? `Address: ${data["Address"]}` : "Address: N/A";
-          document.getElementById("phone").textContent = data["Phone Number"] ? `Phone Number: ${data["Phone Number"]}` : "Phone Number: N/A";
-          document.getElementById("email").textContent = data["Email"] ? `Email: ${data["Email"]}` : "Email: N/A";
+          document.getElementById("dob").textContent = data["date_of_birth"] ? `Date of Birth: ${data["date_of_birth"]}` : "Date of Birth: N/A";
+          document.getElementById("address").textContent = data["address"] ? `Address: ${data["address"]}` : "Address: N/A";
+          document.getElementById("phone").textContent = data["phone_number"] ? `Phone Number: ${data["phone_number"]}` : "Phone Number: N/A";
+          document.getElementById("email").textContent = data["email"] ? `Email: ${data["email"]}` : "Email: N/A";
           document.getElementById("timestamp").textContent = data["timestamp"] ? `Timestamp: ${data["timestamp"]}` : "Timestamp: N/A";
 
           // Display profile picture if available
-          if (data["Profile Picture URL"]) {
+          if (data["profile"]) {
             const profilePicture = document.getElementById("profile-picture");
-            profilePicture.src = data["Profile Picture URL"];
+            profilePicture.src = data["profile"];
             profilePicture.style.display = "block";
           }
 
           // Display PDF preview if available
-          if (data["PDF URL"]) {
+          if (data["pdf"]) {
             const pdfPreview = document.getElementById("pdf-preview");
-            pdfPreview.src = data["PDF URL"];
+            pdfPreview.src = data["pdf"];
             pdfPreview.style.display = "block";
           }
         } else {
