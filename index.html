@@ -68,7 +68,7 @@
           console.log("Document Data Retrieved:", data);
 
           // Display fields with fallback for missing data
-          document.getElementById("full-name").textContent = data["Full Name"] ? `Full Name: ${data["Full Name"]}` : "Full Name: N/A";
+          document.getElementById("full-name").textContent = data["full_name"] ? `Full Name: ${data["full_name"]}` : "Full Name: N/A";
           document.getElementById("dob").textContent = data["Date of Birth"] ? `Date of Birth: ${data["Date of Birth"]}` : "Date of Birth: N/A";
           document.getElementById("address").textContent = data["Address"] ? `Address: ${data["Address"]}` : "Address: N/A";
           document.getElementById("phone").textContent = data["Phone Number"] ? `Phone Number: ${data["Phone Number"]}` : "Phone Number: N/A";

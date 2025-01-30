@@ -23,6 +23,8 @@ dependencies:
   cached_network_image:
   image_picker:
   firebase_storage:
+  file_picker: ^8.3.1
+  flutter_cached_pdfview:
 
 dev_dependencies:
   flutter_test:

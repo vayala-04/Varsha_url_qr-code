@@ -82,6 +82,10 @@ file
 3.0
 file:///Users/thakur/.pub-cache/hosted/pub.dev/file-7.0.1/
 file:///Users/thakur/.pub-cache/hosted/pub.dev/file-7.0.1/lib/
+file_picker
+3.4
+file:///Users/thakur/.pub-cache/hosted/pub.dev/file_picker-8.3.1/
+file:///Users/thakur/.pub-cache/hosted/pub.dev/file_picker-8.3.1/lib/
 file_selector
 3.0
 file:///Users/thakur/.pub-cache/hosted/pub.dev/file_selector-1.0.3/
@@ -146,6 +150,10 @@ flutter_cache_manager
 3.0
 file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_cache_manager-3.4.1/
 file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_cache_manager-3.4.1/lib/
+flutter_cached_pdfview
+2.12
+file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_cached_pdfview-0.4.3/
+file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_cached_pdfview-0.4.3/lib/
 flutter_lints
 2.19
 file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_lints-2.0.3/
@@ -162,6 +170,10 @@ flutter_local_notifications_platform_interface
 3.1
 file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_local_notifications_platform_interface-8.0.0/
 file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_local_notifications_platform_interface-8.0.0/lib/
+flutter_pdfview
+2.17
+file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_pdfview-1.4.0/
+file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_pdfview-1.4.0/lib/
 flutter_plugin_android_lifecycle
 3.5
 file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.24/
@@ -450,6 +462,10 @@ web
 3.4
 file:///Users/thakur/.pub-cache/hosted/pub.dev/web-1.1.0/
 file:///Users/thakur/.pub-cache/hosted/pub.dev/web-1.1.0/lib/
+win32
+3.5
+file:///Users/thakur/.pub-cache/hosted/pub.dev/win32-5.10.1/
+file:///Users/thakur/.pub-cache/hosted/pub.dev/win32-5.10.1/lib/
 xdg_directories
 3.3
 file:///Users/thakur/.pub-cache/hosted/pub.dev/xdg_directories-1.1.0/

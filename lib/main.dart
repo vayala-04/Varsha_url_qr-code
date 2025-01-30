@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -73,10 +75,14 @@ class SecondScreenState extends State<SecondScreen> {
 
       DocumentReference docRef;
       if (documentId != null) {
-        docRef = FirebaseFirestore.instance.collection('Patient Data').doc(documentId);
+        docRef = FirebaseFirestore.instance
+            .collection('Patient Data')
+            .doc(documentId);
         await docRef.update(enrichedData);
       } else {
-        docRef = await FirebaseFirestore.instance.collection('Patient Data').add(enrichedData);
+        docRef = await FirebaseFirestore.instance
+            .collection('Patient Data')
+            .add(enrichedData);
         prefs.setString('documentId', docRef.id);
       }
 
@@ -127,7 +133,8 @@ class SecondScreenState extends State<SecondScreen> {
 
             await ndef.write(message);
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('URL written to NFC tag successfully!')),
+              const SnackBar(
+                  content: Text('URL written to NFC tag successfully!')),
             );
             NfcManager.instance.stopSession();
           } catch (e) {
@@ -156,6 +163,9 @@ class SecondScreenState extends State<SecondScreen> {
         child: Column(
           children: [
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(200, 50),
+              ),
               child: const Text('Write to Pendant'),
               onPressed: () {
                 _handleWriteToPendant(context);
@@ -163,6 +173,9 @@ class SecondScreenState extends State<SecondScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(200, 50),
+              ),
               child: const Text('Read from Pendant'),
               onPressed: () async {
                 await isNfcAvailable().then((available) {
@@ -180,6 +193,9 @@ class SecondScreenState extends State<SecondScreen> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(200, 50),
+              ),
               child: const Text('View Summary'),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
@@ -200,7 +216,41 @@ class SecondScreenState extends State<SecondScreen> {
                   );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('No submissions available to display!')),
+                    const SnackBar(
+                        content: Text('No submissions available to display!')),
+                  );
+                }
+              },
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(200, 50),
+              ),
+              child: const Text('Delete Data'),
+              onPressed: () async {
+                final prefs = await SharedPreferences.getInstance();
+                String? url = prefs.getString('url');
+
+                if (url != null) {
+                  Uri uri = Uri.parse(url);
+                  final documentId = uri.queryParameters['id'] ?? '';
+
+                  await FirebaseFirestore.instance
+                      .collection('Patient Data')
+                      .doc(documentId)
+                      .delete()
+                      .then((_) async {
+                    var pref = await SharedPreferences.getInstance();
+                    pref.clear();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          content: Text('Data Deleted Successfully')),
+                    );
+                  });
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('No Data')),
                   );
                 }
               },
@@ -382,7 +432,7 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
       appBar: AppBar(
         title: const Text('Patient Data'),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -407,10 +457,32 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
                 );
               }).toList(),
             ),
+            (widget.data['profile'] != null &&
+                    widget.data['profile'].isNotEmpty)
+                ? Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white, width: 0),
+                          shape: BoxShape.circle,
+                          color: Colors.grey,
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  widget.data['profile']))),
+                      height: 100,
+                      width: 100,
+                    ),
+                  )
+                : const SizedBox(),
+            const SizedBox(
+              height: 16,
+            ),
             ListView(
               shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
               children: widget.data.entries.map((entry) {
-                return entry.key == 'timestamp'
+                return (entry.key == 'timestamp' ||
+                        entry.key == 'pdf' ||
+                        entry.key == 'profile')
                     ? const SizedBox()
                     : Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -420,6 +492,20 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
                         ),
                       );
               }).toList(),
+            ),
+            (widget.data['pdf'] != null && widget.data['pdf'].isNotEmpty)
+                ? Center(
+                    child: TextButton(
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  PdfPreview(widget.data['pdf'])));
+                        },
+                        child: const Text("View PDF")),
+                  )
+                : const SizedBox(),
+            const SizedBox(
+              height: 16,
             ),
           ],
         ),
@@ -433,6 +519,29 @@ class FormScreen extends StatefulWidget {
 
   @override
   FormScreenState createState() => FormScreenState();
+}
+
+class PdfPreview extends StatefulWidget {
+  final String url;
+
+  const PdfPreview(this.url, {super.key});
+
+  @override
+  PdfPreviewState createState() => PdfPreviewState();
+}
+
+class PdfPreviewState extends State<PdfPreview> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('PDF Preview'),
+      ),
+      body: const PDF(
+        swipeHorizontal: true,
+      ).cachedFromUrl(widget.url),
+    );
+  }
 }
 
 class FormScreenState extends State<FormScreen> {
@@ -462,7 +571,11 @@ class FormScreenState extends State<FormScreen> {
 
   List<String> languages = ['English', 'Spanish'];
 
-  File ? selectedProfile;
+  File? selectedProfile;
+  File? selectedPdf;
+  String? selectedPdfFileName;
+
+  bool loader = false;
 
   @override
   void initState() {
@@ -480,8 +593,6 @@ class FormScreenState extends State<FormScreen> {
     }
     super.dispose();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -515,7 +626,6 @@ class FormScreenState extends State<FormScreen> {
                 } else if (value == 'Spanish') {
                   context.setLocale(const Locale('es'));
                 }
-
               },
               items: languages.map((String lang) {
                 return DropdownMenuItem<String>(
@@ -524,87 +634,109 @@ class FormScreenState extends State<FormScreen> {
                 );
               }).toList(),
             ),
-            const SizedBox(height: 16,),
+            const SizedBox(
+              height: 16,
+            ),
             Center(
                 child: Stack(
-                  children: [
-                    (selectedProfile == null &&
-                        args?['profile'] == null)
-                        ? Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.white, width: 0),
-                          shape: BoxShape.circle,
-                          color: Colors.grey,
-                          image: const DecorationImage(
-                              image: AssetImage('assets/icons/avatar.png'))),
-                      height: 100,
-                      width: 100,
-                    )
-                        : (selectedProfile != null)
-                        ? Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color:  Colors.white,
-                              width: 0),
-                          shape: BoxShape.circle,
-                          color: Colors.grey,
-                          image: DecorationImage(
-                              image: FileImage(
-                                  selectedProfile!))),
-                      height: 100,
-                      width: 100,
-                    )
-                        : Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              color: Colors.white,
-                              width: 0),
-                          shape: BoxShape.circle,
-                          color:  Colors.grey,
-                          image: DecorationImage(
-                              image:
-                              CachedNetworkImageProvider(
-                                  args?['profile']))),
-                      height: 100,
-                      width: 100,
-                    ),
-                    Positioned(
-                      bottom: 2,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () {
-                          showPicker(context, 0);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(
+              children: [
+                (selectedProfile == null && (args?['profile'] == null||args?['profile'].isEmpty))
+                    ? Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.white, width: 0),
                             shape: BoxShape.circle,
-                            border: Border.all(
-                                color: Colors.white, width: 2),
-                            color: Colors.black,
+                            color: Colors.grey,
+                            image: const DecorationImage(
+                                image: AssetImage('assets/icons/avatar.png'))),
+                        height: 100,
+                        width: 100,
+                      )
+                    : (selectedProfile != null)
+                        ? Container(
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.white, width: 0),
+                                shape: BoxShape.circle,
+                                color: Colors.grey,
+                                image: DecorationImage(
+                                    image: FileImage(selectedProfile!))),
+                            height: 100,
+                            width: 100,
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.white, width: 0),
+                                shape: BoxShape.circle,
+                                color: Colors.grey,
+                                image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                        args?['profile']))),
+                            height: 100,
+                            width: 100,
                           ),
-                          height: 28,
-                          width: 28,
-                          child: const Icon(Icons.edit,size: 14,color: Colors.white,),
-                        ),
+                Positioned(
+                  bottom: 2,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      showPicker(context, 0);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                        color: Colors.black,
+                      ),
+                      height: 28,
+                      width: 28,
+                      child: const Icon(
+                        Icons.edit,
+                        size: 14,
+                        color: Colors.white,
                       ),
                     ),
-                  ],
-                )),
-            const SizedBox(height: 16,),
+                  ),
+                ),
+              ],
+            )),
+            const SizedBox(
+              height: 16,
+            ),
             for (final field in _fieldNames) ...[
               TextField(
                 controller: _controllers[field],
                 decoration: InputDecoration(labelText: field.tr()),
               ),
               const SizedBox(height: 16),
+              field == 'do_not_resuscitate'
+                  ? Center(
+                      child: TextButton(
+                        onPressed: pickPdfFile,
+                        child: Text(selectedPdf == null
+                            ? "select_pdf".tr()
+                            : '${'file_selected'.tr()} $selectedPdfFileName'),
+                      ),
+                    )
+                  : const SizedBox(),
             ],
+            const SizedBox(
+              height: 24,
+            ),
             Center(
-              child: ElevatedButton(
-                onPressed:()=> _handleSubmit(context),
-                child: const Text('Submit'),
-              ),
+              child: loader
+                  ? const CircularProgressIndicator()
+                  : ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  fixedSize: const Size(200, 50),
+                ),
+                      onPressed: () => _handleSubmit(context, args),
+                      child: Text('submit'.tr()),
+                    ),
+            ),
+            const SizedBox(
+              height: 24,
             ),
           ],
         ),
@@ -612,16 +744,41 @@ class FormScreenState extends State<FormScreen> {
     );
   }
 
+  Future<void> _handleSubmit(
+      BuildContext context, Map<String, dynamic>? args) async {
+    setState(() {
+      loader = true;
+    });
 
-  void _handleSubmit(BuildContext context) {
+    String profileUrl = '';
+    String pdfUrl = '';
+
+    if (selectedProfile != null) {
+      profileUrl = await uploadImage(context, selectedProfile, 0) ?? '';
+    } else {
+      profileUrl = args?['profile'] ?? '';
+    }
+
+    if (selectedPdf != null) {
+      pdfUrl = await uploadImage(context, selectedPdf, 1) ?? '';
+    } else {
+      pdfUrl = args?['pdf'] ?? '';
+    }
+
     final submission = {
       for (final field in _fieldNames)
         if (_controllers[field]!.text.trim().isNotEmpty)
           field: _controllers[field]!.text.trim(),
+      'profile': profileUrl,
+      'pdf': pdfUrl
     };
 
+    setState(() {
+      loader = false;
+    });
+
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Form Submitted Successfully!')),
+      SnackBar(content: Text('from_submitted_successfully'.tr())),
     );
 
     Navigator.pop(context, submission);
@@ -660,13 +817,15 @@ class FormScreenState extends State<FormScreen> {
     // Pick an image
     await picker
         .pickImage(
-        source: ImageSource.gallery,
-        maxHeight: 1080,
-        maxWidth: 1080,
-        imageQuality: 90)
+            source: ImageSource.gallery,
+            maxHeight: 1080,
+            maxWidth: 1080,
+            imageQuality: 90)
         .then((image) async {
       if (image?.path != null) {
-      await  uploadImage( context, image);
+        setState(() {
+          selectedProfile = File(image!.path);
+        });
       }
     });
   }
@@ -676,40 +835,53 @@ class FormScreenState extends State<FormScreen> {
     // Capture a photo
     await picker
         .pickImage(
-        source: ImageSource.camera,
-        maxHeight: 1080,
-        maxWidth: 1080,
-        imageQuality: 90)
+            source: ImageSource.camera,
+            maxHeight: 1080,
+            maxWidth: 1080,
+            imageQuality: 90)
         .then((image) async {
       if (image?.path != null) {
-        await  uploadImage( context, image);
+        setState(() {
+          selectedProfile = File(image!.path);
+        });
       }
     });
   }
 
-
-
-  Future<String?> uploadImage(BuildContext context, XFile? image) async {
-    String fileName = basename(image!.path);
+  Future<String?> uploadImage(
+      BuildContext context, File? file, int type) async {
+    String fileName = basename(file!.path);
     try {
       await firebase_storage.FirebaseStorage.instance
-          .ref('images/$fileName')
-          .putFile(File(image.path));
+          .ref('${type == 0 ? 'images' : 'files'}/$fileName')
+          .putFile(File(file.path));
       var downloadUrl = await firebase_storage.FirebaseStorage.instance
-          .ref('images/$fileName')
+          .ref('${type == 0 ? 'images' : 'files'}/$fileName')
           .getDownloadURL();
       return downloadUrl;
     } on firebase_storage.FirebaseException catch (e) {
-
-
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(content: Text(e.message.toString())),
+        SnackBar(content: Text(e.message.toString())),
       );
       debugPrint("Upload Error ${e.message}");
     }
     return null;
   }
 
+  Future<void> pickPdfFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (result != null) {
+      String filePath = result.files.single.path!;
+      setState(() {
+        selectedPdf = File(filePath);
+        selectedPdfFileName = result.files.single.name;
+      });
+    }
+  }
 }
 
 class SummaryScreen extends StatelessWidget {

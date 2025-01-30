@@ -1,6 +1,7 @@
 # This is a generated file; do not edit or check into version control.
 cloud_firestore=/Users/thakur/.pub-cache/hosted/pub.dev/cloud_firestore-5.6.1/
 cloud_firestore_web=/Users/thakur/.pub-cache/hosted/pub.dev/cloud_firestore_web-4.4.1/
+file_picker=/Users/thakur/.pub-cache/hosted/pub.dev/file_picker-8.3.1/
 file_selector=/Users/thakur/.pub-cache/hosted/pub.dev/file_selector-1.0.3/
 file_selector_android=/Users/thakur/.pub-cache/hosted/pub.dev/file_selector_android-0.5.1+12/
 file_selector_ios=/Users/thakur/.pub-cache/hosted/pub.dev/file_selector_ios-0.5.3+1/
@@ -14,6 +15,7 @@ firebase_storage=/Users/thakur/.pub-cache/hosted/pub.dev/firebase_storage-12.4.0
 firebase_storage_web=/Users/thakur/.pub-cache/hosted/pub.dev/firebase_storage_web-3.10.7/
 flutter_local_notifications=/Users/thakur/.pub-cache/hosted/pub.dev/flutter_local_notifications-18.0.1/
 flutter_local_notifications_linux=/Users/thakur/.pub-cache/hosted/pub.dev/flutter_local_notifications_linux-5.0.0/
+flutter_pdfview=/Users/thakur/.pub-cache/hosted/pub.dev/flutter_pdfview-1.4.0/
 flutter_plugin_android_lifecycle=/Users/thakur/.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.24/
 image_picker=/Users/thakur/.pub-cache/hosted/pub.dev/image_picker-1.1.2/
 image_picker_android=/Users/thakur/.pub-cache/hosted/pub.dev/image_picker_android-0.8.12+20/

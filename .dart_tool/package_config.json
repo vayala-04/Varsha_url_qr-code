@@ -128,6 +128,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "file_picker",
+      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/file_picker-8.3.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.4"
+    },
+    {
       "name": "file_selector",
       "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/file_selector-1.0.3",
       "packageUri": "lib/",
@@ -230,6 +236,12 @@
       "languageVersion": "3.0"
     },
     {
+      "name": "flutter_cached_pdfview",
+      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_cached_pdfview-0.4.3",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "flutter_lints",
       "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_lints-2.0.3",
       "packageUri": "lib/",
@@ -258,6 +270,12 @@
       "rootUri": "file:///Users/thakur/development/flutter/packages/flutter_localizations",
       "packageUri": "lib/",
       "languageVersion": "3.2"
+    },
+    {
+      "name": "flutter_pdfview",
+      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/flutter_pdfview-1.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "flutter_plugin_android_lifecycle",
@@ -710,6 +728,12 @@
       "languageVersion": "3.4"
     },
     {
+      "name": "win32",
+      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/win32-5.10.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.5"
+    },
+    {
       "name": "xdg_directories",
       "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/xdg_directories-1.1.0",
       "packageUri": "lib/",
@@ -728,7 +752,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2025-01-30T06:25:06.816569Z",
+  "generated": "2025-01-30T09:30:15.154586Z",
   "generator": "pub",
   "generatorVersion": "3.6.0",
   "flutterRoot": "file:///Users/thakur/development/flutter",
