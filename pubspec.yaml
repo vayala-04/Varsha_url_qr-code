@@ -25,11 +25,16 @@ dependencies:
   firebase_storage:
   file_picker: ^8.3.1
   flutter_cached_pdfview:
-
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.2
+  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/RAPIDX_logo.png"  # Path to your logo
 
 flutter:
   uses-material-design: true
