@@ -36,6 +36,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/translations/
+    - assets/RAPIDX_logo.png
   # fonts:
   #   - family: Schyler
   #     fonts:
