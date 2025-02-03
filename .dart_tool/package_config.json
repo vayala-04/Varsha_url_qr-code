@@ -752,10 +752,10 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2025-01-30T09:30:15.154586Z",
+  "generated": "2025-02-03T04:28:28.712798Z",
   "generator": "pub",
-  "generatorVersion": "3.6.0",
+  "generatorVersion": "3.6.1",
   "flutterRoot": "file:///Users/thakur/development/flutter",
-  "flutterVersion": "3.27.0",
+  "flutterVersion": "3.27.3",
   "pubCache": "file:///Users/thakur/.pub-cache"
 }
