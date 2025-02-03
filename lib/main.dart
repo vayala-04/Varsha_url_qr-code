@@ -427,6 +427,28 @@ class SimplifiedDataScreen extends StatefulWidget {
 class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
   List<String> languages = ['English', 'Spanish'];
 
+  final List<String> fieldNames = [
+    'full_name',
+    'date_of_birth',
+    'phone_number',
+    'address',
+    'preferred_language',
+    'preferred_hospital',
+    'primary_contact_name',
+    'relationship_to_primary_contact',
+    'primary_contact_phone',
+    'allergies',
+    'medications',
+    'pre_existing_conditions',
+    'past_surgeries',
+    'do_not_resuscitate',
+    'blood_type',
+    'primary_physician_name',
+    'primary_physician_phone',
+    'insurance_provider',
+    'policy_number',
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -480,15 +502,11 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
             ListView(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              children: widget.data.entries.map((entry) {
-                return (entry.key == 'timestamp' ||
-                        entry.key == 'pdf' ||
-                        entry.key == 'profile')
-                    ? const SizedBox()
-                    : Padding(
+              children: fieldNames.map((entry) {
+                return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
-                          '${entry.key.tr()}:   ${entry.value}',
+                          '${entry.tr()}:   ${widget.data[entry]??'N/A'}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       );
