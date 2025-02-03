@@ -9,7 +9,7 @@
   "relationship_to_primary_contact": "Relación con el contacto principal",
   "primary_contact_phone": "Teléfono de contacto principal",
   "allergies": "Alergias",
-  "medications": "Medicamentos",
+  "medications": "médicaments actuels",
   "pre_existing_conditions": "Condiciones preexistentes",
   "past_surgeries": "Cirugías Pasadas",
   "do_not_resuscitate": "¿Tiene una orden de no reanimar (DNR) para cargar? (Responda sí o no)",
