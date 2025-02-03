@@ -19,13 +19,12 @@ dependencies:
   firebase_core: ^3.10.0
   url_launcher: ^6.3.1
   qr_flutter: ^4.1.0
-  easy_localization:
-  cached_network_image:
-  image_picker:
-  firebase_storage:
+  easy_localization: ^3.0.0
+  cached_network_image: ^3.0.0
+  image_picker: ^0.8.5
+  firebase_storage: ^11.0.0
   file_picker: ^8.3.1
-  flutter_cached_pdfview:
-  
+  flutter_cached_pdfview: ^0.1.0
 
 dev_dependencies:
   flutter_test:

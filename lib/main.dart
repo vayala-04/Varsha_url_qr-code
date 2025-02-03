@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
-      title: 'Patient Data Management',
+      title: 'Data Management',
       initialRoute: '/',
       routes: {
         '/': (context) => const SecondScreen(),
@@ -76,12 +76,12 @@ class SecondScreenState extends State<SecondScreen> {
       DocumentReference docRef;
       if (documentId != null) {
         docRef = FirebaseFirestore.instance
-            .collection('Patient Data')
+            .collection('Senior Data')
             .doc(documentId);
         await docRef.update(enrichedData);
       } else {
         docRef = await FirebaseFirestore.instance
-            .collection('Patient Data')
+            .collection('Senior Data')
             .add(enrichedData);
         prefs.setString('documentId', docRef.id);
       }
@@ -237,7 +237,7 @@ class SecondScreenState extends State<SecondScreen> {
                   final documentId = uri.queryParameters['id'] ?? '';
 
                   await FirebaseFirestore.instance
-                      .collection('Patient Data')
+                      .collection('Senior Data')
                       .doc(documentId)
                       .delete()
                       .then((_) async {
@@ -335,7 +335,7 @@ class UrlListScreen extends StatelessWidget {
     debugPrint("DOC ID $documentId");
     try {
       final docSnapshot = await FirebaseFirestore.instance
-          .collection('Patient Data')
+          .collection('Senior Data')
           .doc(documentId)
           .get();
 
@@ -430,7 +430,7 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Patient Data'),
+        title: const Text('Senior Data'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -607,7 +607,7 @@ class FormScreenState extends State<FormScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Patient Data Portal'),
+        title: const Text('Data Portal'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
