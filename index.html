@@ -21,6 +21,7 @@
 <p id="insuranceprovider"></p>
 <p id="medications"></p>
 <p id="pastsurgeries"></p>
+<p id="otherinfo"></p>    
 <p id="policynumber"></p>
 <p id="preexistingconditions"></p>
 <p id="preferredhospital"></p>
@@ -96,6 +97,7 @@ document.getElementById("DNR").textContent = data["do_not_resuscitate"] ? `Do yo
 document.getElementById("insuranceprovider").textContent = data["insurance_provider"] ? `Insurance Provider: ${data["insurance_provider"]}` : "Insurance Provider: N/A";
 document.getElementById("medications").textContent = data["medications"] ? `Current Medications: ${data["medications"]}` : "Current Medications: N/A";
 document.getElementById("pastsurgeries").textContent = data["past_surgeries"] ? `Past Surgeries: ${data["past_surgeries"]}` : "Past Surgeries: N/A";
+document.getElementById("otherinfo").textContent = data["otherinfo"] ? `Other Information: ${data["otherinfo"]}` : "Other Information: N/A";
 document.getElementById("policynumber").textContent = data["policy_number"] ? `Policy Number: ${data["policy_number"]}` : "Policy Number: N/A";
 document.getElementById("preexistingconditions").textContent = data["pre_existing_conditions"] ? `Pre-existing Conditions: ${data["pre_existing_conditions"]}` : "Pre-existing Conditions: N/A";
 document.getElementById("preferredhospital").textContent = data["preferred_hospital"] ? `Preferred Hospital: ${data["preferred_hospital"]}` : "Preferred Hospital: N/A";
