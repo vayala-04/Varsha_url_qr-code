@@ -339,9 +339,9 @@
     },
     {
       "name": "image_picker",
-      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/image_picker-1.1.2",
+      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/image_picker-0.8.9",
       "packageUri": "lib/",
-      "languageVersion": "3.3"
+      "languageVersion": "2.18"
     },
     {
       "name": "image_picker_android",
@@ -351,9 +351,9 @@
     },
     {
       "name": "image_picker_for_web",
-      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/image_picker_for_web-3.0.6",
+      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/image_picker_for_web-2.2.0",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "2.18"
     },
     {
       "name": "image_picker_ios",
@@ -441,7 +441,7 @@
     },
     {
       "name": "mime",
-      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/mime-2.0.0",
+      "rootUri": "file:///Users/thakur/.pub-cache/hosted/pub.dev/mime-1.0.6",
       "packageUri": "lib/",
       "languageVersion": "3.2"
     },
@@ -800,7 +800,7 @@
       "languageVersion": "3.0"
     }
   ],
-  "generated": "2025-02-03T04:38:12.817106Z",
+  "generated": "2025-02-03T05:10:45.797314Z",
   "generator": "pub",
   "generatorVersion": "3.6.1",
   "flutterRoot": "file:///Users/thakur/development/flutter",

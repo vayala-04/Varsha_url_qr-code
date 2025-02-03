@@ -1,50 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Data Portal</title>
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Portal</title>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <h1>Welcome to the Data Portal</h1>
-  <h2 id="full-name">Loading...</h2>
-  <p id="dob"></p>
-  <p id="address"></p>
-  <p id="phone"></p>
-  <p id="email"></p>
-  <p id="allergies"></p>
-  <p id="bloodtype"></p>
-  <p id="DNR"></p>
-  <p id="insuranceprovider"></p>
-  <p id="medications"></p>
-  <p id="pastsurgeries"></p>
-  <p id="policynumber"></p>
-  <p id="preexistingconditions"></p>
-  <p id="preferredhospital"></p>
-  <p id="preferredlanguage"></p>
-  <p id="pcontactname"></p>
-  <p id="pcontactphone"></p>
-  <p id="pphysicianname"></p>
-  <p id="pphysicianphone"></p>
-  <p id="relationship"></p>
-  <p id="timestamp"></p>
+<h1>Welcome to the Data Portal</h1>
+<h2 id="full-name">Loading...</h2>
+<p id="dob"></p>
+<p id="address"></p>
+<p id="phone"></p>
+<p id="email"></p>
+<p id="allergies"></p>
+<p id="bloodtype"></p>
+<p id="DNR"></p>
+<p id="insuranceprovider"></p>
+<p id="medications"></p>
+<p id="pastsurgeries"></p>
+<p id="policynumber"></p>
+<p id="preexistingconditions"></p>
+<p id="preferredhospital"></p>
+<p id="preferredlanguage"></p>
+<p id="pcontactname"></p>
+<p id="pcontactphone"></p>
+<p id="pphysicianname"></p>
+<p id="pphysicianphone"></p>
+<p id="relationship"></p>
+<p id="timestamp"></p>
 
-  <!-- Profile Picture -->
-  <div id="profile-picture-container">
+<!-- Profile Picture -->
+<div id="profile-picture-container">
     <h3>Profile Picture</h3>
-    <img id="profile-picture" src="" alt="Profile Picture" style="max-width: 150px; max-height: 150px; display: none;" />
-  </div>
+    <img id="profile-picture" src="" alt="Profile Picture"
+         style="max-width: 150px; max-height: 150px; display: none;"/>
+</div>
 
-  <!-- PDF Preview -->
-  <div id="pdf-preview-container">
+<!-- PDF Preview -->
+<div id="pdf-preview-container">
     <h3>PDF Preview</h3>
-    <iframe id="pdf-preview" src="" style="width: 100%; height: 500px; display: none; border: 1px solid #ccc;"></iframe>
-  </div>
+    <iframe id="pdf-preview" src=""
+            style="width: 100%; height: 500px; display: none; border: 1px solid #ccc;"></iframe>
+</div>
 
-  <script>
+<script>
     // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyDNtdXr47xjKQOydo96uvzjYviZmO31jPo",
@@ -89,20 +91,20 @@
           document.getElementById("phone").textContent = data["phone_number"] ? `Phone Number: ${data["phone_number"]}` : "Phone Number: N/A";
           document.getElementById("email").textContent = data["email"] ? `Email: ${data["email"]}` : "Email: N/A";
           document.getElementById("allergies").textContent = data["allergies"] ? `Allergies: ${data["allergies"]}` : "Allergies: N/A";
-document.getElementById("bloodtype").textContent = data["bloodtype"] ? `Blood Type: ${data["bloodtype"]}` : "Blood Type: N/A";
-document.getElementById("DNR").textContent = data["DNR"] ? `Do you have Do Not Resuscitate order to upload?: ${data["DNR"]}` : "Do you have Do Not Resuscitate order to upload? N/A";
+          document.getElementById("bloodtype").textContent = data["blood_type"] ? `Blood Type: ${data["blood_type"]}` : "Blood Type: N/A";
+document.getElementById("DNR").textContent = data["do_not_resuscitate"] ? `Do you have Do Not Resuscitate order to upload?: ${data["do_not_resuscitate"]}` : "Do you have Do Not Resuscitate order to upload? N/A";
 document.getElementById("insuranceprovider").textContent = data["insuranceprovider"] ? `Insurance Provider: ${data["DNR"]}` : "Insurance Provider: N/A";
 document.getElementById("medications").textContent = data["medications"] ? `Current Medications: ${data["medications"]}` : "Current Medications: N/A";
-document.getElementById("pastsurgeries").textContent = data["pastsurgeries"] ? `Past Surgeries: ${data["pastsurgeries"]}` : "Past Surgeries: N/A";
-document.getElementById("policynumber").textContent = data["policynumber“] ? `Policy Number: ${data["pastsurgeries"]}` : "Policy Number: N/A";
-document.getElementById("preexistingconditions").textContent = data["preexistingconditions“] ? `Pre-existing Conditions: ${data["preexistingconditions"]}` : "Pre-existing Conditions: N/A";
-document.getElementById("preferredhospital").textContent = data["preferredhospital“] ? `Preferred Hospital: ${data["preferredhospital"]}` : "Preferred Hospital: N/A";
-document.getElementById("preferredlanguage").textContent = data["preferredlanguage “] ? `Preferred Language: ${data["preferredlanguage"]}` : "Preferred Language: N/A";
-document.getElementById("pcontactname").textContent = data["pcontactname “] ? `Primary Contact Name: ${data["pcontactname"]}` : "Primary Contact Name: N/A";
-document.getElementById("pcontactphone").textContent = data["pcontactphone “] ? `Primary Contact Phone: ${data["pcontactphone"]}` : "Primary Contact Phone: N/A";
-document.getElementById("pphysicianname").textContent = data["pphysicianname “] ? `Primary Physician Name: ${data["pphysicianname"]}` : "Primary Physician Name: N/A";
-document.getElementById("pphysicianphone").textContent = data["pphysicianphone“] ? `Primary Physician Phone: ${data["pphysicianphone"]}` : "Primary Physician Phone: N/A";
-document.getElementById("relationship").textContent = data["relationship“] ? `Primary Contact relationship: ${data["relationship"]}` : "Primary Contact Relationship: N/A";
+document.getElementById("pastsurgeries").textContent = data["past_surgeries"] ? `Past Surgeries: ${data["past_surgeries"]}` : "Past Surgeries: N/A";
+document.getElementById("policynumber").textContent = data["policy_number“] ? `Policy Number: ${data["policy_number"]}` : "Policy Number: N/A";
+document.getElementById("preexistingconditions").textContent = data["pre_existing_conditions“] ? `Pre-existing Conditions: ${data["pre_existing_conditions"]}` : "Pre-existing Conditions: N/A";
+document.getElementById("preferredhospital").textContent = data["preferred_hospital“] ? `Preferred Hospital: ${data["preferred_hospital"]}` : "Preferred Hospital: N/A";
+document.getElementById("preferredlanguage").textContent = data["preferred_language “] ? `Preferred Language: ${data["preferred_language"]}` : "Preferred Language: N/A";
+document.getElementById("pcontactname").textContent = data["primary_contact_name “] ? `Primary Contact Name: ${data["primary_contact_name"]}` : "Primary Contact Name: N/A";
+document.getElementById("pcontactphone").textContent = data["primary_contact_phone “] ? `Primary Contact Phone: ${data["primary_contact_phone"]}` : "Primary Contact Phone: N/A";
+document.getElementById("pphysicianname").textContent = data["primary_physician_name “] ? `Primary Physician Name: ${data["primary_physician_name"]}` : "Primary Physician Name: N/A";
+document.getElementById("pphysicianphone").textContent = data["primary_physician_phone“] ? `Primary Physician Phone: ${data["primary_physician_phone"]}` : "Primary Physician Phone: N/A";
+document.getElementById("relationship").textContent = data["relationship_to_primary_contact“] ? `Primary Contact relationship: ${data["relationship_to_primary_contact"]}` : "Primary Contact Relationship: N/A";
 document.getElementById("timestamp").textContent = data["timestamp"] ? `Timestamp: ${data["timestamp"]}` : "Timestamp: N/A";
 
           // Display profile picture if available
@@ -129,6 +131,6 @@ document.getElementById("timestamp").textContent = data["timestamp"] ? `Timestam
     }
 
     fetchData();
-  </script>
+</script>
 </body>
 </html>

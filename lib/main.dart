@@ -202,6 +202,7 @@ class SecondScreenState extends State<SecondScreen> {
                 String? url = prefs.getString('url');
 
                 if (url != null) {
+                  debugPrint("url $url");
                   Uri uri = Uri.parse(url);
                   final documentId = uri.queryParameters['id'] ?? '';
                   Navigator.push(
