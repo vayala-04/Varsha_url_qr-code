@@ -12,7 +12,7 @@
   "medications": "Medications",
   "pre_existing_conditions": "Pre-Existing Conditions",
   "past_surgeries": "Past Surgeries",
-  "do_not_resuscitate": "Do Not Resuscitate",
+  "do_not_resuscitate": "Do you have a Do Not Resuscitate Order to upload?",
   "blood_type": "Blood Type",
   "primary_physician_name": "Primary Physician Name",
   "primary_physician_phone": "Primary Physician Phone",

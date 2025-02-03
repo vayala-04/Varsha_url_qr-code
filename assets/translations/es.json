@@ -12,7 +12,7 @@
   "medications": "Medicamentos",
   "pre_existing_conditions": "Condiciones preexistentes",
   "past_surgeries": "Cirugías Pasadas",
-  "do_not_resuscitate": "No reanimar",
+  "do_not_resuscitate": "¿Tiene una orden de no reanimar para cargar?",
   "blood_type": "Tipo de sangre",
   "primary_physician_name": "Nombre del médico primario",
   "primary_physician_phone": "Teléfono del médico primario",
