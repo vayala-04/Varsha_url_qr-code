@@ -176,21 +176,21 @@ class SecondScreenState extends State<SecondScreen> {
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(200, 50),
               ),
-             child: const Text('Read from Pendant'),
-             onPressed: () async {
-               await isNfcAvailable().then((available) {
-                 if (available) {
-                   readNfcTag(context);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                         content: Text(
-                             'NFC may not be supported or may be temporarily turned off.')),
-                    );
-                  }
-                });
-              },
-            ),*/
+            // child: const Text('Read from Pendant'),
+             //onPressed: () async {
+              // await isNfcAvailable().then((available) {
+               //  if (available) {
+                 //  readNfcTag(context);
+                 // } else {
+                   // ScaffoldMessenger.of(context).showSnackBar(
+                     // const SnackBar(
+                       //  content: Text(
+                         //    'NFC may not be supported or may be temporarily turned off.')),
+                    //);
+                 // }
+                //});
+              //},
+            //),*/
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
