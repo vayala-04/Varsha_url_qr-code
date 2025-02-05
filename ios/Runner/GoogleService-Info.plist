@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.app.vayalaNfcApp</string>
+	<string>com.app.vayalaNfcAppRapidx</string>
 	<key>PROJECT_ID</key>
 	<string>rapidx-c05d4</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:340185921376:ios:f5d9a5d695c916a29bd005</string>
+	<string>1:340185921376:ios:1bfa0cc691c12c119bd005</string>
 </dict>
 </plist>

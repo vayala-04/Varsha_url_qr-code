@@ -14,6 +14,11 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>es</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>varsha</string>
 	<key>CFBundlePackageType</key>
@@ -28,6 +33,10 @@
 	<true/>
 	<key>NFCReaderUsageDescription</key>
 	<string>App uses the NFC to read/write the tags.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>App requires access to the camera to upload your profile photo </string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App requires access the user's photo library to upload your profile photo</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -339,15 +348,5 @@
 		<string>E828BD080F</string>
 		<string>F0000000030001</string>
 	</array>
-	<key>CFBundleLocalizations</key>
-	<array>
-		<string>en</string>
-		<string>es</string>
-	</array>
-    <key>NSCameraUsageDescription</key>
-        <string>App requires access to the camera to upload your profile photo </string>
-        <key>NSPhotoLibraryUsageDescription</key>
-        <string>App requires access the user's photo library to upload your profile photo</string>
-       
 </dict>
 </plist>
