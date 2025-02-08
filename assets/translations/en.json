@@ -1,45 +1,33 @@
 {
-  "personal_information": {
-    "full_name": "Full Name",
-    "date_of_birth": "Date of Birth",
-    "weight": "Weight",
-    "phone_number": "Phone Number",
-    "address": "Address",
-    "preferred_language": "Preferred Language"
-  },
-  "emergency_contacts": {
-    "primary_contact_name": "Emergency Contact Name",
-    "relationship_to_primary_contact": "Relationship to Emergency Contact",
-    "primary_contact_phone": "Emergency Contact Phone"
-  },
-  "medical_information": {
-    "allergies": "Allergies",
-    "medications": "Current Medications",
-    "pre_existing_conditions": "Pre-Existing Conditions",
-    "past_surgeries": "Past Surgeries",
-    "otherinfo": "Other (e.g.ventilator settings, mental health triggers)",
-    "do_not_resuscitate": "Do You have a DNR order to upload? (Yes/No)"
-  },
-  "physician_and_hospital": {
-    "primary_physician_name": "Primary Physician Name",
-    "primary_physician_phone": "Primary Physician Phone",
-    "preferred_hospital": "Preferred Hospital"
-  },
-  "insurance_details": {
-    "insurance_provider": "Insurance Provider",
-    "policy_number": "Policy Number"
-  },
-  "additional_information": {
-    "blood_type": "Blood Type"
-  },
-  "uploads_and_submission": {
-    "pdf": "Upload DNR PDF",
-    "select_pdf": "Select DNR Form as PDF to Upload",
-    "file_selected": "File Selected",
-    "photo_library": "Photo Library",
-    "camera": "Camera",
-    "profile": "Profile",
-    "submit": "Submit",
-    "from_submitted_successfully": "Form Submitted Successfully!"
-  }
+  "full_name": "Full Name",
+  "date_of_birth": "Date of Birth",
+  "weight": "Weight",
+  "phone_number": "Phone Number",
+  "address": "Address",
+  "preferred_language": "Preferred Language",
+  "preferred_hospital": "Preferred Hospital",
+  "primary_contact_name": "Emergency Contact Name",
+  "relationship_to_primary_contact": "Relationship to Emergency Contact",
+  "primary_contact_phone": "Emergency Contact Phone",
+  "allergies": "Allergies",
+  "medications": "Current Medications",
+  "pre_existing_conditions": "Pre-Existing Conditions",
+  "past_surgeries": "Past Surgeries",
+  "otherinfo": "Other (e.g., ventilator settings, mental health triggers)",
+  "do_not_resuscitate": "Do You have a DNR order to upload? (Yes/No)",
+  "blood_type": "Blood Type",
+  "primary_physician_name": "Primary Physician Name",
+  "primary_physician_phone": "Primary Physician Phone",
+  "insurance_provider": "Insurance Provider",
+  "policy_number": "Policy Number",
+  "select_language": "Select Language",
+  "photo_library": "Photo Library",
+  "camera": "Camera",
+  "pdf": " Upload DNR PDF",
+  "profile": "Profile",
+  "from_submitted_successfully": "Form Submitted Successfully!",
+  "submit": "Submit",
+  "select_pdf": "Select DNR Form as PDF to Upload",
+  "file_selected": "File Selected"
 }
+
