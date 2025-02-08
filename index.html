@@ -82,6 +82,30 @@
         const params = new URLSearchParams(window.location.search);
         const docId = params.get('id');
 
+        // Function to format Firestore timestamp to MM/DD/YYYY, HH:MM:SS AM/PM (ET)
+        function formatTimestampToET(timestamp) {
+            if (!timestamp || !timestamp.seconds) return "Timestamp: N/A";
+            
+            const date = new Date(timestamp.seconds * 1000); // Convert Firestore Timestamp to JavaScript Date
+            
+            // Convert to Eastern Time (ET) using Intl.DateTimeFormat
+            const options = {
+                timeZone: "America/New_York", // Eastern Time Zone
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true // Ensure AM/PM format
+            };
+            
+            // Format Date to MM/DD/YYYY, HH:MM:SS AM/PM
+            const formattedDate = new Intl.DateTimeFormat("en-US", options).format(date);
+            
+            return `Timestamp: ${formattedDate}`;
+        }
+
         async function fetchData() {
             if (!docId) {
                 document.getElementById("full-name").textContent = "Invalid URL: No Document ID found.";
@@ -95,6 +119,10 @@
                 if (docSnap.exists) {
                     const data = docSnap.data();
 
+                    // Format and display timestamp
+                    const timestampElement = document.getElementById("last-updated");
+                    timestampElement.textContent = data["timestamp"] ? formatTimestampToET(data["timestamp"]) : "Timestamp: N/A";
+
                     // Populate fields
                     document.getElementById("full-name").textContent = data["full_name"] ? `Full Name: ${data["full_name"]}` : "Full Name: N/A";
                     document.getElementById("dob").textContent = data["date_of_birth"] ? `Date of Birth: ${data["date_of_birth"]}` : "Date of Birth: N/A";
@@ -102,20 +130,6 @@
                     document.getElementById("address").textContent = data["address"] ? `Address: ${data["address"]}` : "Address: N/A";
                     document.getElementById("phone").textContent = data["phone_number"] ? `Phone Number: ${data["phone_number"]}` : "Phone Number: N/A";
                     document.getElementById("preferredlanguage").textContent = data["preferred_language"] ? `Preferred Language: ${data["preferred_language"]}` : "Preferred Language: N/A";
-
-                    // Emergency Contacts
-                    document.getElementById("pcontactname").textContent = data["primary_contact_name"] ? `Emergency Contact Name: ${data["primary_contact_name"]}` : "Emergency Contact Name: N/A";
-                    document.getElementById("relationship").textContent = data["relationship_to_primary_contact"] ? `Relationship: ${data["relationship_to_primary_contact"]}` : "Relationship: N/A";
-                    document.getElementById("pcontactphone").textContent = data["primary_contact_phone"] ? `Emergency Contact Phone: ${data["primary_contact_phone"]}` : "Emergency Contact Phone: N/A";
-
-                    // Timestamp formatting
-                    if (data["timestamp"]) {
-                        const timestampElement = document.getElementById("last-updated");
-                        const date = new Date(data["timestamp"].seconds * 1000); // Convert Firestore Timestamp to JS Date
-                        timestampElement.textContent = `Timestamp: ${date.toLocaleString()}`;
-                    } else {
-                        document.getElementById("last-updated").textContent = "Timestamp: N/A";
-                    }
 
                     // Display profile picture if available
                     if (data["profile"]) {
@@ -142,5 +156,6 @@
     </script>
 </body>
 </html>
+
 
 
