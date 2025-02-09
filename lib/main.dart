@@ -76,12 +76,12 @@ class SecondScreenState extends State<SecondScreen> {
       DocumentReference docRef;
       if (documentId != null) {
         docRef = FirebaseFirestore.instance
-            .collection('Senior Data')
+            .collection('Senior Data1')
             .doc(documentId);
         await docRef.update(enrichedData);
       } else {
         docRef = await FirebaseFirestore.instance
-            .collection('Senior Data')
+            .collection('Senior Data1')
             .add(enrichedData);
         prefs.setString('documentId', docRef.id);
       }
@@ -238,7 +238,7 @@ class SecondScreenState extends State<SecondScreen> {
                   final documentId = uri.queryParameters['id'] ?? '';
 
                   await FirebaseFirestore.instance
-                      .collection('Senior Data')
+                      .collection('Senior Data1')
                       .doc(documentId)
                       .delete()
                       .then((_) async {
@@ -336,7 +336,7 @@ class UrlListScreen extends StatelessWidget {
     debugPrint("DOC ID $documentId");
     try {
       final docSnapshot = await FirebaseFirestore.instance
-          .collection('Senior Data')
+          .collection('Senior Data1')
           .doc(documentId)
           .get();
 
@@ -454,7 +454,7 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Senior Data'),
+        title: const Text('Senior Data1'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
