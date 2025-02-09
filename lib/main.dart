@@ -76,12 +76,12 @@ class SecondScreenState extends State<SecondScreen> {
       DocumentReference docRef;
       if (documentId != null) {
         docRef = FirebaseFirestore.instance
-            .collection('Revised Senior Data')
+            .collection('Senior Data')
             .doc(documentId);
         await docRef.update(enrichedData);
       } else {
         docRef = await FirebaseFirestore.instance
-            .collection('Revised Senior Data')
+            .collection('Senior Data')
             .add(enrichedData);
         prefs.setString('documentId', docRef.id);
       }
@@ -238,7 +238,7 @@ class SecondScreenState extends State<SecondScreen> {
                   final documentId = uri.queryParameters['id'] ?? '';
 
                   await FirebaseFirestore.instance
-                      .collection('Revised Senior Data')
+                      .collection('Senior Data')
                       .doc(documentId)
                       .delete()
                       .then((_) async {
@@ -336,7 +336,7 @@ class UrlListScreen extends StatelessWidget {
     debugPrint("DOC ID $documentId");
     try {
       final docSnapshot = await FirebaseFirestore.instance
-          .collection('Revised Senior Data')
+          .collection('Senior Data')
           .doc(documentId)
           .get();
 
@@ -430,7 +430,6 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
   final List<String> fieldNames = [
     'full_name',
     'date_of_birth',
-    'weight',
     'phone_number',
     'address',
     'preferred_language',
@@ -442,7 +441,6 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
     'medications',
     'pre_existing_conditions',
     'past_surgeries',
-    'otherinfo',
     'do_not_resuscitate',
     'blood_type',
     'primary_physician_name',
@@ -455,7 +453,7 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Revised Senior Data'),
+        title: const Text('Senior Data'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -571,7 +569,6 @@ class FormScreenState extends State<FormScreen> {
   final List<String> _fieldNames = [
     'full_name',
     'date_of_birth',
-    'weight',
     'phone_number',
     'address',
     'preferred_language',
@@ -583,7 +580,6 @@ class FormScreenState extends State<FormScreen> {
     'medications',
     'pre_existing_conditions',
     'past_surgeries',
-    'otherinfo',
     'do_not_resuscitate',
     'blood_type',
     'primary_physician_name',
