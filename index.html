@@ -24,16 +24,16 @@
             background: white;
             padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 10px rgba(254, 216, 177);
         }
         .bucket {
-            background: #e3e3e3;
+            background: #FC6A03;
             margin: 10px 0;
             padding: 10px;
             border-radius: 5px;
         }
         h2 {
-            background: #007BFF;
+            background: #FC6A03;
             color: white;
             padding: 10px;
             border-radius: 5px;
@@ -176,17 +176,18 @@
                     // Medical Information
                     document.getElementById("allergies").textContent = `Allergies: ${data["allergies"] || "N/A"}`;
                     document.getElementById("medications").textContent = `Medications: ${data["medications"] || "N/A"}`;
-                    document.getElementById("preexistingconditions").textContent = `Conditions: ${data["pre_existing_conditions"] || "N/A"}`;
+                    document.getElementById("preexistingconditions").textContent = `Pre-existing Conditions: ${data["pre_existing_conditions"] || "N/A"}`;
+                    document.getElementById("pastsurgeries").textContent = `Past Surgeries: ${data["past_surgeries"] || "N/A"}`;
+                    document.getElementById("otherinfo").textContent = `Other Medical Information: ${data["otherinfo"] || "N/A"}`;
 
                      // Physician and Hospital
-                    document.getElementById("allergies").textContent = `Allergies: ${data["allergies"] || "N/A"}`;
-                    document.getElementById("preferredhospital").textContent = `Preferred Hospital: ${data["preferredhospital"] || "N/A"}`;
-                    document.getElementById("primaryphysicianname").textContent = `Primary Care Physician Name: ${data["primaryphysicianname"] || "N/A"}`;
-                    document.getElementById("primaryphysicianphone").textContent = `Primary Care Physician Phone: ${data["primaryphysicianphone"] || "N/A"}`;
+                    document.getElementById("preferredhospital").textContent = `Preferred Hospital: ${data["preferred_hospital"] || "N/A"}`;
+                    document.getElementById("primaryphysicianname").textContent = `Primary Care Physician Name: ${data["primary_physician_name"] || "N/A"}`;
+                    document.getElementById("primaryphysicianphone").textContent = `Primary Care Physician Phone: ${data["primary_physician_phone"] || "N/A"}`;
 
                     // Insurance Details
-                    document.getElementById("insuranceprovider").textContent = `Insurance Provider: ${data["insuranceprovider"] || "N/A"}`;
-                    document.getElementById("policynumber").textContent = `Policy Number: ${data["policynumber"] || "N/A"}`;
+                    document.getElementById("insuranceprovider").textContent = `Insurance Provider: ${data["insurance_provider"] || "N/A"}`;
+                    document.getElementById("policynumber").textContent = `Policy Number: ${data["policy_number"] || "N/A"}`;
                    
                     // Display profile picture
                     if (data["profile"]) {
