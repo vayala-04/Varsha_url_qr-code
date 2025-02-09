@@ -73,6 +73,8 @@ class SecondScreenState extends State<SecondScreen> {
       final prefs = await SharedPreferences.getInstance();
       final documentId = prefs.getString('documentId');
 
+
+
       DocumentReference docRef;
       if (documentId != null) {
         docRef = FirebaseFirestore.instance
