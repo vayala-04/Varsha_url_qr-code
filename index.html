@@ -97,16 +97,16 @@
         <!-- Physician & Hospital -->
         <div class="bucket">
             <h2>Physician & Hospital</h2>
-            <p id="preferred_hospital"></p>
-            <p id="primary_physician_name"></p>
-            <p id="primary_physician_phone"></p>
+            <p id="preferredhospital"></p>
+            <p id="primaryphysicianname"></p>
+            <p id="primaryphysicianphone"></p>
         </div>
 
         <!-- Insurance Details -->
         <div class="bucket">
             <h2>Insurance Details</h2>
-            <p id="insurance_provider"></p>
-            <p id="policy_number"></p>
+            <p id="insuranceprovider"></p>
+            <p id="policynumber"></p>
         </div>
 
         <!-- Profile Picture -->
@@ -179,13 +179,13 @@
                     document.getElementById("preexistingconditions").textContent = `Conditions: ${data["pre_existing_conditions"] || "N/A"}`;
 
                      // Physician and Hospital
-                    document.getElementById("preferred_hospital").textContent = `Preferred Hospital: ${data["preferred_hospital"] || "N/A"}`;
-                    document.getElementById("primary_physician_name").textContent = `Primary Care Physician Name: ${data["primary_physician_name"] || "N/A"}`;
-                    document.getElementById("primary_physician_phone").textContent = `Primary Care Physician Phone: ${data["primary_physician_phone"] || "N/A"}`;
+                    document.getElementById("preferredhospital").textContent = `Preferred Hospital: ${data["preferredhospital"] || "N/A"}`;
+                    document.getElementById("primaryphysicianname").textContent = `Primary Care Physician Name: ${data["primaryphysicianname"] || "N/A"}`;
+                    document.getElementById("primaryphysicianphone").textContent = `Primary Care Physician Phone: ${data["primaryphysicianphone"] || "N/A"}`;
 
                     // Insurance Details
-                    document.getElementById("insurance_provider").textContent = `Insurance Provider: ${data["insurance_provider"] || "N/A"}`;
-                    document.getElementById("policy_number").textContent = `Policy Number: ${data["policy_number"] || "N/A"}`;
+                    document.getElementById("insuranceprovider").textContent = `Insurance Provider: ${data["insuranceprovider"] || "N/A"}`;
+                    document.getElementById("policynumber").textContent = `Policy Number: ${data["policynumber"] || "N/A"}`;
                    
                     // Display profile picture
                     if (data["profile"]) {
