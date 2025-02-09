@@ -178,6 +178,15 @@
                     document.getElementById("medications").textContent = `Medications: ${data["medications"] || "N/A"}`;
                     document.getElementById("preexistingconditions").textContent = `Conditions: ${data["pre_existing_conditions"] || "N/A"}`;
 
+                     // Physician and Hospital
+                    document.getElementById("preferredhospital").textContent = `Preferred Hospital: ${data["preferredhospital"] || "N/A"}`;
+                    document.getElementById("pphysicianname").textContent = `Primary Care Physician Name: ${data["pphysicianname"] || "N/A"}`;
+                    document.getElementById("pphysicianphone").textContent = `Primary Care Physician Phone: ${data["pphysicianphone"] || "N/A"}`;
+
+                    // Insurance Details
+                    document.getElementById("insuranceprovider").textContent = `Insurance Provider: ${data["insuranceprovider"] || "N/A"}`;
+                    document.getElementById("policynumber").textContent = `Policy Number: ${data["policynumber"] || "N/A"}`;
+                   
                     // Display profile picture
                     if (data["profile"]) {
                         document.getElementById("profile-picture").src = data["profile"];
