@@ -430,6 +430,7 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
   final List<String> fieldNames = [
     'full_name',
     'date_of_birth',
+    'weight',
     'phone_number',
     'address',
     'preferred_language',
@@ -569,6 +570,7 @@ class FormScreenState extends State<FormScreen> {
   final List<String> _fieldNames = [
     'full_name',
     'date_of_birth',
+    'weight',
     'phone_number',
     'address',
     'preferred_language',
