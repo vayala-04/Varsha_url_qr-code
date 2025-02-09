@@ -1,6 +1,7 @@
 {
   "full_name": "Nombre completo",
   "date_of_birth": "Fecha de nacimiento",
+  "weight": "peso (en libras)",
   "phone_number": "Número de teléfono",
   "address": "DIRECCIÓN",
   "preferred_language": "Idioma preferido",
