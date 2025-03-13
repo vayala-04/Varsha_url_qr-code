@@ -234,16 +234,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>flutter_local_notifications-flutter_local_notifications_privacy.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>flutter_local_notifications.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>flutter_pdfview.xcscheme</key>
 		<dict>
 			<key>isShown</key>

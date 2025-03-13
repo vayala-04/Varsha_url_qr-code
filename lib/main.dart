@@ -73,8 +73,6 @@ class SecondScreenState extends State<SecondScreen> {
       final prefs = await SharedPreferences.getInstance();
       final documentId = prefs.getString('documentId');
 
-
-
       DocumentReference docRef;
       if (documentId != null) {
         docRef = FirebaseFirestore.instance
@@ -159,16 +157,42 @@ class SecondScreenState extends State<SecondScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Welcome to RAPIDx'),
+        title: const Text(
+          'Welcome to RAPIDx',
+          style: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+        ),
       ),
       body: Center(
         child: Column(
           children: [
+            const SizedBox(
+              height: 24,
+            ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                fixedSize: const Size(200, 50),
+                fixedSize: const Size(248, 50),
               ),
-              child: const Text('Write to Pendant'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/icons/write.png',
+                    width: 24.0,
+                    height: 24.0,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  const Text(
+                    'Write to Pendant',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
               onPressed: () {
                 _handleWriteToPendant(context);
               },
@@ -196,9 +220,29 @@ class SecondScreenState extends State<SecondScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                fixedSize: const Size(200, 50),
+                fixedSize: const Size(248, 50),
               ),
-              child: const Text('View Summary'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/icons/search.png',
+                    width: 24.0,
+                    height: 24.0,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  const Text(
+                    'View Summary',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  )
+                ],
+              ),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
                 String? url = prefs.getString('url');
@@ -228,9 +272,28 @@ class SecondScreenState extends State<SecondScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                fixedSize: const Size(200, 50),
+                fixedSize: const Size(248, 50),
               ),
-              child: const Text('Delete Data'),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'assets/icons/delete.png',
+                    width: 24.0,
+                    height: 24.0,
+                    fit: BoxFit.cover,
+                  ),
+                  const SizedBox(
+                    width: 24,
+                  ),
+                  const Text(
+                    'Delete Data',
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ],
+              ),
               onPressed: () async {
                 final prefs = await SharedPreferences.getInstance();
                 String? url = prefs.getString('url');
@@ -375,7 +438,21 @@ class UrlListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Document URL'),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: const Tooltip(
+              message: "Back to Main screen",
+              child: Icon(
+                Icons.arrow_back,
+              )),
+        ),
+        title: const Text('Document URL',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black)),
       ),
       body: Center(
         child: Column(
@@ -383,19 +460,22 @@ class UrlListScreen extends StatelessWidget {
           children: [
             const Text(
               'Document URL:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10),
             GestureDetector(
               onTap: () => _fetchSimplifiedData(context),
-              child: Text(
-                documentUrl,
-                style: const TextStyle(
-                  color: Colors.blue,
-                  decoration: TextDecoration.underline,
-                  fontSize: 16,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  documentUrl,
+                  style: const TextStyle(
+                    color: Colors.blue,
+                    decoration: TextDecoration.underline,
+                    fontSize: 20,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(
@@ -457,14 +537,29 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Senior Data1'),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: const Tooltip(
+              message: "Back to Document URL screen",
+              child: Icon(
+                Icons.arrow_back,
+              )),
+        ),
+        title: const Text('Senior Data1',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('select_language'.tr()),
+            Text('select_language'.tr(),style:
+            const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             DropdownButton(
               isExpanded: true,
               value: context.locale == const Locale('en')
@@ -480,7 +575,10 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
               items: languages.map((String lang) {
                 return DropdownMenuItem<String>(
                   value: lang,
-                  child: Text(lang),
+                  child: Text(lang,style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                  )),
                 );
               }).toList(),
             ),
@@ -493,6 +591,7 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
                           shape: BoxShape.circle,
                           color: Colors.grey,
                           image: DecorationImage(
+                            fit: BoxFit.cover,
                               image: CachedNetworkImageProvider(
                                   widget.data['profile']))),
                       height: 100,
@@ -508,12 +607,15 @@ class SimplifiedDataScreenState extends State<SimplifiedDataScreen> {
               physics: const NeverScrollableScrollPhysics(),
               children: fieldNames.map((entry) {
                 return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Text(
-                          '${entry.tr()}:   ${widget.data[entry]??'N/A'}',
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      );
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    '${entry.tr()}:   ${widget.data[entry] ?? 'N/A'}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                );
               }).toList(),
             ),
             (widget.data['pdf'] != null && widget.data['pdf'].isNotEmpty)
@@ -599,7 +701,6 @@ class FormScreenState extends State<FormScreen> {
   File? selectedProfile;
   File? selectedPdf;
 
-
   bool loader = false;
 
   @override
@@ -632,14 +733,35 @@ class FormScreenState extends State<FormScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Data Portal'),
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: const Tooltip(
+              message: "Back to Main screen",
+              child: Icon(
+                Icons.arrow_back,
+              )),
+        ),
+        title: const Text('Data Portal',
+            style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black)),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('select_language'.tr()),
+            Tooltip(
+              preferBelow: false,
+              verticalOffset: 0,
+              message: 'select_language'.tr(),
+              child: Text('select_language'.tr(),
+                  style:
+                      const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ),
             DropdownButton(
               isExpanded: true,
               value: context.locale == const Locale('en')
@@ -655,7 +777,11 @@ class FormScreenState extends State<FormScreen> {
               items: languages.map((String lang) {
                 return DropdownMenuItem<String>(
                   value: lang,
-                  child: Text(lang),
+                  child: Text(lang,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.normal,
+                      )),
                 );
               }).toList(),
             ),
@@ -665,7 +791,8 @@ class FormScreenState extends State<FormScreen> {
             Center(
                 child: Stack(
               children: [
-                (selectedProfile == null && (args?['profile'] == null||args?['profile'].isEmpty))
+                (selectedProfile == null &&
+                        (args?['profile'] == null || args?['profile'].isEmpty))
                     ? Container(
                         decoration: BoxDecoration(
                             border: Border.all(color: Colors.white, width: 0),
@@ -684,6 +811,7 @@ class FormScreenState extends State<FormScreen> {
                                 shape: BoxShape.circle,
                                 color: Colors.grey,
                                 image: DecorationImage(
+                                  fit: BoxFit.cover,
                                     image: FileImage(selectedProfile!))),
                             height: 100,
                             width: 100,
@@ -695,6 +823,7 @@ class FormScreenState extends State<FormScreen> {
                                 shape: BoxShape.circle,
                                 color: Colors.grey,
                                 image: DecorationImage(
+                                  fit: BoxFit.cover,
                                     image: CachedNetworkImageProvider(
                                         args?['profile']))),
                             height: 100,
@@ -730,18 +859,59 @@ class FormScreenState extends State<FormScreen> {
               height: 16,
             ),
             for (final field in _fieldNames) ...[
+              Tooltip(
+                message: field.tr(),
+                preferBelow: false,
+                verticalOffset: 0,
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    Text(
+                      field.tr(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      width: 4,
+                    ),
+                    Image.asset(
+                      "assets/icons/info.png",
+                      width: 18,
+                    ),
+                  ],
+                ),
+              ),
               TextField(
                 controller: _controllers[field],
-                decoration: InputDecoration(labelText: field.tr()),
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.black),
+                decoration: InputDecoration(
+                    hintText: field.tr(),
+                    hintStyle: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.normal,
+                    )),
               ),
               const SizedBox(height: 16),
               field == 'do_not_resuscitate'
                   ? Center(
                       child: TextButton(
                         onPressed: pickPdfFile,
-                        child: Text((selectedPdf == null&& (args?['pdf']==null||args?['pdf'].isEmpty))
-                            ? "select_pdf".tr()
-                            : 'file_selected'.tr()),
+                        child: Text(
+                          (selectedPdf == null &&
+                                  (args?['pdf'] == null ||
+                                      args?['pdf'].isEmpty))
+                              ? "select_pdf".tr()
+                              : 'file_selected'.tr(),
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.normal,
+                              color: Theme.of(context).primaryColor),
+                        ),
                       ),
                     )
                   : const SizedBox(),
@@ -753,11 +923,15 @@ class FormScreenState extends State<FormScreen> {
               child: loader
                   ? const CircularProgressIndicator()
                   : ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  fixedSize: const Size(200, 50),
-                ),
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(200, 50),
+                      ),
                       onPressed: () => _handleSubmit(context, args),
-                      child: Text('submit'.tr()),
+                      child: Text('submit'.tr(),
+                          style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black)),
                     ),
             ),
             const SizedBox(

@@ -14,7 +14,6 @@ ${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework
 ${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework
 ${BUILT_PRODUCTS_DIR}/file_picker/file_picker.framework
 ${BUILT_PRODUCTS_DIR}/file_selector_ios/file_selector_ios.framework
-${BUILT_PRODUCTS_DIR}/flutter_local_notifications/flutter_local_notifications.framework
 ${BUILT_PRODUCTS_DIR}/flutter_pdfview/flutter_pdfview.framework
 ${BUILT_PRODUCTS_DIR}/image_picker_ios/image_picker_ios.framework
 ${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework
