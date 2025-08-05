@@ -1,215 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Portal</title>
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-firestore-compat.js"></script>
-    
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            text-align: center;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(254, 216, 177);
-        }
-        .bucket {
-            background: #FF9913;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        h2 {
-            background: #FF9913;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        p {
-            margin: 5px 0;
-            font-size: 16px;
-        }
-        .profile-container img {
-            max-width: 150px;
-            max-height: 150px;
-            display: block;
-            margin: 10px auto;
-            border-radius: 50%;
-        }
-        iframe {
-            width: 100%;
-            height: 500px;
-            border: 1px solid #ccc;
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FetchTag - Max</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    text-align: center;
+  }
+  .header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 1rem;
+    font-size: 1.5rem;
+  }
+  .dog-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 1rem auto;
+    object-fit: cover;
+  }
+  .tabs {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+  }
+  .tab {
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+    background: #eee;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  .tab.active {
+    background: #4CAF50;
+    color: white;
+  }
+  .content {
+    max-width: 400px;
+    margin: auto;
+    text-align: left;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  }
+</style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Welcome to the RAPIDx Data Portal</h1>
-        <h2 id="last-updated">Timestamp: Loading...</h2>
+<div class="header">Hi! My name is Max 🐶</div>
+<img src="https://t3.ftcdn.net/jpg/01/04/40/06/360_F_104400672_zCaPIFbYT1dXdzN85jso7NV8M6uwpKtf.jpg" alt="Dog photo" class="dog-pic">
 
-        <!-- Personal Information -->
-        <div class="bucket">
-            <h2>Personal Information</h2>
-            <p id="full-name"></p>
-            <p id="dob"></p>
-            <p id="weight"></p>
-            <p id="address"></p>
-            <p id="phone"></p>
-            <p id="preferredlanguage"></p>
-        </div>
+<div class="tabs">
+  <div class="tab active" onclick="showTab('contact')">Contact</div>
+  <div class="tab" onclick="showTab('medical')">Medical Info</div>
+  <div class="tab" onclick="showTab('notes')">Notes</div>
+</div>
 
-        <!-- Emergency Contacts -->
-        <div class="bucket">
-            <h2>Emergency Contacts</h2>
-            <p id="pcontactname"></p>
-            <p id="relationship"></p>
-            <p id="pcontactphone"></p>
-        </div>
+<div class="content" id="contact">
+  <h3>Contact Info</h3>
+  <p>Owner: Jane Doe</p>
+  <p>Phone: (123) 456-7890</p>
+  <p>Address: 123 Park Lane, Cityville</p>
+</div>
 
-        <!-- Medical Information -->
-        <div class="bucket">
-            <h2>Medical Information</h2>
-            <p id="allergies"></p>
-            <p id="medications"></p>
-            <p id="preexistingconditions"></p>
-            <p id="pastsurgeries"></p>
-            <p id="bloodtype"></p>
-            <p id="DNR"></p>
-            <p id="otherinfo"></p>
-        </div>
+<div class="content" id="medical" style="display:none;">
+  <h3>Medical Info</h3>
+  <p>Allergies: None</p>
+  <p>Medications: Heartworm prevention (monthly)</p>
+  <p>Vet: City Vet Clinic - (987) 654-3210</p>
+</div>
 
-        <!-- Physician & Hospital -->
-        <div class="bucket">
-            <h2>Physician & Hospital</h2>
-            <p id="preferredhospital"></p>
-            <p id="primaryphysicianname"></p>
-            <p id="primaryphysicianphone"></p>
-        </div>
+<div class="content" id="notes" style="display:none;">
+  <h3>Notes</h3>
+  <p>Loves treats, friendly but can be shy around strangers.</p>
+</div>
 
-        <!-- Insurance Details -->
-        <div class="bucket">
-            <h2>Insurance Details</h2>
-            <p id="insuranceprovider"></p>
-            <p id="policynumber"></p>
-        </div>
-
-        <!-- Profile Picture -->
-        <div class="bucket profile-container">
-            <h2>Profile Picture</h2>
-            <img id="profile-picture" src="" alt="Profile Picture" style="display: none;"/>
-        </div>
-
-        <!-- PDF Preview -->
-        <div class="bucket">
-            <h2>Do Not Resuscitate (DNR) Form</h2>
-            <iframe id="pdf-preview"></iframe>
-        </div>
-    </div>
-
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDNtdXr47xKQOydo96uvzjYviZmO31jPo",
-            authDomain: "rapidx-c05d4.firebaseapp.com",
-            projectId: "rapidx-c05d4",
-            storageBucket: "rapidx-c05d4.appspot.com",
-            messagingSenderId: "340185921376",
-            appId: "1:340185921376:web:5d088b0e41e027439bd005",
-            measurementId: "G-25K8KBB70R"
-        };
-
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-
-        // Extract Document ID from URL
-        const params = new URLSearchParams(window.location.search);
-        const docId = params.get('id');
-
-        async function fetchData() {
-            if (!docId) {
-                document.getElementById("full-name").textContent = "Invalid URL: No Document ID found.";
-                return;
-            }
-
-            try {
-                const docRef = db.collection("Senior Data1").doc(docId);
-                const docSnap = await docRef.get();
-
-                if (docSnap.exists) {
-                    const data = docSnap.data();
-
-                    // Format and display timestamp
-                    document.getElementById("last-updated").textContent = data["timestamp"] 
-                        ? `Last Updated: ${new Date(data["timestamp"].seconds * 1000).toLocaleString("en-US", { timeZone: "America/New_York" })}`
-                        : "Timestamp: N/A";
-
-                    // Populate Personal Information
-                    document.getElementById("full-name").textContent = `Full Name: ${data["full_name"] || "N/A"}`;
-                    document.getElementById("dob").textContent = `Date of Birth: ${data["date_of_birth"] || "N/A"}`;
-                    document.getElementById("weight").textContent = `Weight: ${data["weight"] || "N/A"} lbs`;
-                    document.getElementById("address").textContent = `Address: ${data["address"] || "N/A"}`;
-                    document.getElementById("phone").textContent = `Phone: ${data["phone_number"] || "N/A"}`;
-                    document.getElementById("preferredlanguage").textContent = `Preferred Language: ${data["preferred_language"] || "N/A"}`;
-
-                    // Emergency Contacts
-                    document.getElementById("pcontactname").textContent = `Contact Name: ${data["primary_contact_name"] || "N/A"}`;
-                    document.getElementById("relationship").textContent = `Relationship: ${data["relationship_to_primary_contact"] || "N/A"}`;
-                    document.getElementById("pcontactphone").textContent = `Contact Phone: ${data["primary_contact_phone"] || "N/A"}`;
-
-                    // Medical Information
-                    document.getElementById("allergies").textContent = `Allergies: ${data["allergies"] || "N/A"}`;
-                    document.getElementById("medications").textContent = `Medications: ${data["medications"] || "N/A"}`;
-                    document.getElementById("preexistingconditions").textContent = `Pre-existing Conditions: ${data["pre_existing_conditions"] || "N/A"}`;
-                    document.getElementById("pastsurgeries").textContent = `Past Surgeries: ${data["past_surgeries"] || "N/A"}`;
-                    document.getElementById("otherinfo").textContent = `Other Medical Information: ${data["otherinfo"] || "N/A"}`;
-
-                     // Physician and Hospital
-                    document.getElementById("preferredhospital").textContent = `Preferred Hospital: ${data["preferred_hospital"] || "N/A"}`;
-                    document.getElementById("primaryphysicianname").textContent = `Primary Care Physician Name: ${data["primary_physician_name"] || "N/A"}`;
-                    document.getElementById("primaryphysicianphone").textContent = `Primary Care Physician Phone: ${data["primary_physician_phone"] || "N/A"}`;
-
-                    // Insurance Details
-                    document.getElementById("insuranceprovider").textContent = `Insurance Provider: ${data["insurance_provider"] || "N/A"}`;
-                    document.getElementById("policynumber").textContent = `Policy Number: ${data["policy_number"] || "N/A"}`;
-                   
-                    // Display profile picture
-                    if (data["profile"]) {
-                        document.getElementById("profile-picture").src = data["profile"];
-                        document.getElementById("profile-picture").style.display = "block";
-                    }
-
-                    // Display PDF
-                    if (data["pdf"]) {
-                        document.getElementById("pdf-preview").src = data["pdf"];
-                        document.getElementById("pdf-preview").style.display = "block";
-                    }
-                } else {
-                    document.getElementById("full-name").textContent = "404 Not Found: Document does not exist.";
-                }
-            } catch (error) {
-                document.getElementById("full-name").textContent = "Error: Failed to load the data.";
-            }
-        }
-
-        fetchData();
-    </script>
+<script>
+function showTab(tabName) {
+  document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
+  document.getElementById(tabName).style.display = 'block';
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(.tab[onclick*="${tabName}"]).classList.add('active');
+}
+</script>
 
 </body>
 </html>
